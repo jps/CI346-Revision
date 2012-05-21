@@ -1,4 +1,4 @@
-\documentclass[a4paper,oneside]{report}
+\documentclass[a4paper,oneside]{article}
 
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -56,15 +56,9 @@ breaklines=true}
 	\break
 }
 
-% chapter header
-\renewcommand{\@makechapterhead}[1]
-{\vspace*{50\p@}{
-	\parindent \z@ \raggedright \normalfont
-	%\huge \bfseries \thechapter. #1
-	\huge \bfseries #1
-	\vspace{20pt}}}
 
-\setcounter{secnumdepth}{-1} 
+\setcounter{tocdepth}{4}
+%\setcounter{secnumdepth}{3} 
 \onehalfspace
 \oddsidemargin 1in 
 \oddsidemargin 0.6in 
@@ -74,6 +68,8 @@ breaklines=true}
 \lstset{language=C} 
 
 \begin{document}
+
+\tableofcontents
 
 \section{Systems}
 
@@ -85,7 +81,10 @@ breaklines=true}
 	\subsection{Concurrent}
 
 		\subsubsection{Deadlock}
-			
+			\paragraph{The dining philosophers}
+			5 philosophers are sat at a table with 5 chopsticks each philosopher requires two chopsticks to eat
+
+
 		\subsubsection{Livelock}
 
 		\subsubsection{Priority Inversion}
@@ -97,7 +96,46 @@ breaklines=true}
 
 	\subsection{Distributed}
 
+		\subsubsection{Client Server}
+
+		\subsubsection{Decentralized}
+
+			Bit torrent, P2P
+
 	\subsection{Real time}
+			Real time systems are often computer systems which are part of (embedded in) a larger system e.g. process control, autopilot, manufacturing ‘Embedded’ often used as a synonym for real time.
+
+	\begin{itemize}
+		\item	Need to cope with a variety of external events
+		\item  software frequently large and complex
+		\item Reliable and safe
+		\item able to detect and recover from failures
+		\item Need to interact with external hardware
+	\end{itemize}
+
+
+		\subsubsection{Hard Real Time}
+		
+
+			Need to be able to specify timing requirements
+			when to perform actions
+			when to complete actions by
+			what to do when deadlines are missed 
+			granularity is important (e.g. IBM PC clock granularity is 55ms = 100yds at 600mph)
+
+
+			Aerospace - autopilot
+
+			Granularity - Clock speed, how fast will the system be updated if a plane is traveling at 600 miles an hour 		margin of error may grow large. 
+
+
+
+
+		\subsubsection{Soft Real Time}
+			
+			Multimedia - this is an example where using UDP is a good choice for streaming video, etc. 
+
+			Payroll systems
 
 
 \section{Languages}
