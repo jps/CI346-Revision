@@ -1,0 +1,236 @@
+\documentclass[a4paper,oneside]{report}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{caption}
+\usepackage[english]{babel}
+\usepackage{fancyhdr} 
+\usepackage{float}
+\usepackage{multirow}
+\usepackage[pdftex]{graphicx}
+\usepackage{listings}      
+\usepackage{pdfpages}
+\usepackage{setspace}
+\usepackage{url}
+\usepackage{wrapfig}
+
+\lstset{language=C,
+numberstyle=\footnotesize,
+%basicstyle=\ttfamily\footnotesize,
+basicstyle=\footnotesize,
+numbers=left,
+stepnumber=1,
+frame= lines,
+breaklines=true}
+
+\makeatletter
+
+
+%
+% Some custom definitions
+%
+
+% add horizontal lines
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\newcommand{\HRuleLight}{\rule{\linewidth}{0.1mm}}
+
+% custom part page
+\def\part#1#2
+{
+	\par\break
+  	\addcontentsline{toc}{part}{#1}
+	\noindent
+	\null	
+	\HRuleLight\\[0.0cm]
+	\vspace{20pt}	 
+	\begin{flushright} 		
+  	{\Huge \bfseries \noindent #1}\\
+  	\vspace{30pt} 
+	\begin{minipage}{0.85\textwidth}
+		\begin{flushright}
+		{\large \noindent #2}
+		\end{flushright}
+	\end{minipage}\\[0.75cm] 
+	\end{flushright} 		
+	\thispagestyle{empty}
+	\break
+}
+
+% chapter header
+\renewcommand{\@makechapterhead}[1]
+{\vspace*{50\p@}{
+	\parindent \z@ \raggedright \normalfont	%\huge \bfseries \thechapter. #1
+	\huge \bfseries #1	\vspace{20pt}}}
+
+\setcounter{secnumdepth}{-1} 
+\onehalfspace
+\oddsidemargin 1in 
+\oddsidemargin 0.6in 
+\topmargin -0.3in
+\setlength{\textwidth}{14cm}
+\setlength{\textheight}{23cm}
+\lstset{language=C} 
+
+\begin{document}
+
+%
+% Cover page
+%
+\begin{titlepage}
+\begin{center}
+
+\HRuleLight\\[0.5cm]
+
+\Huge Programming, Concurrency and Client-Server Computing
+
+\HRuleLight\\[0.2cm]
+
+\large School of Computing, Engineering and Mathematics\\ \textbf{University of Brighton}
+
+\vfill
+\huge Revision Booklet\\
+\large May, 2012\\
+
+\end{center}
+\end{titlepage}
+
+
+%
+% Table of contents
+%
+{
+	\renewcommand\thepage{}
+	\setcounter{tocdepth}{3}
+	\tableofcontents
+	\clearpage
+}
+
+% reset page count
+\setcounter{page}{1}
+
+
+%
+% Start of content
+%
+
+%\section{What Makes a Good Program}
+%\section{History(?)}
+
+\chapter{Concurrency}
+	\section{What it is}
+	
+	Concurrency allows you to effectively utilise available processing power by allowing a computer to perform several different tasks simultaneously (e.g web web server requests, spell-checking whilst typing)
+	
+    	\subsection{Types of concurrency}
+    	
+    	\paragraph{Coroutines} With co-operative schedules (or coroutines), processes suspend voluntarily  when they need to wait for an event. Processes may also suspend at regular intervals during lengthy processing.
+    	
+    	\paragraph{Timeslicing} With pre-emptive scheduling (or timeslicing), processes are suspended as a result of interrupts from external hardware. This can present problems with shared resource access, as it is impossible to predict at what point a process will be suspended.
+    	
+  	\section{How it's implemented}
+  	
+    	\subsection{Java}
+      		
+      		\paragraph{Threads} Java's \emph{Thread} class can be used to implement concurrency. Each instance of the class represents a different `thread' of execution, allowing multiple processes to execute simultaneously.\\ 
+\textbf{Useful methods:} \emph{Thread.start()}, \emph{Thread.run()} - thread halts on exit from run, \emph{Thread.sleep(time)}, \emph{Thread.interrupt()}, \emph{Thread.get/setPriority()}
+
+      		\paragraph{Synchronisation} Problems will occur if two threads try to modify/access shared data simultaneously (or rather if one tries to access while one tries to modify, or both try to modify). Using a \emph{synchronized} block prevents data corruption, as only one thread is able to execute it at a time. Each Java object has an internal ‘lock’ and a queue for waiting threads; if the lock is clear, lock the object and enter the block, if the lock is set, wait. On exit from the block, clear the lock and wake up a waiting thread (if there are any). This isn't very OO, as data is only protected where it is accessed, not where it is defined. The solution is to `synchronize' an entire method.
+      		
+    	\subsection{Ada}
+      		\subsubsection{Tasks}
+      		\subsubsection{Entries (rendezvous)}
+      		\subsubsection{Protected records}
+    	\subsection{Haskell}
+    	
+  	\section{Issues Associated With Concurrency}
+  	
+  	Although concurrency adds the power to do new things, it also brings with it new types of errors.
+  	
+    	\subsection{The Dining Philosophers}
+    	
+    	
+    	\subsection{Deadlock}
+    	Deadlock occurs when two (or more) processes require access to an inaccessible certain resource in order to continue. This usually occurs when one process has a lock on some resource which is needed by another process, which itself has a lock on a resource which the first process holds. Neither process are   able to relinquish their lock on the problem resources, as they cannot get a lock on the new resources etc. etc.\\
+    	
+    	\noindent All four of the following conditions are necessary for deadlock to occur: 
+    	\begin{enumerate}
+    		\item Tasks need to use a non-shareable resource\\ 
+    			  \emph{Can be prevented by virtualising resources (e.g. print spooling on disk: printer is non-shareable, disk is shareable), though this is not always possible (e.g. a railway track is not shareable between two trains and cannot be virtualised).}
+    		\item Tasks hold onto resources while waiting for extra ones\\
+    			  \emph{Insist that all resources are allocated at once (task cannot proceed until all resources have been granted). This is inefficient as resources will be allocated when not needed.}
+    		\item Resources cannot be taken away from tasks by a third party\\
+    			  \emph{See above solution.}
+    		\item There is a circular chain of tasks requesting a resource held by another task\\
+    			  \emph{Resources can be prioritised, allocated in priority order. A process must finish using (and release) high priority resources before it can use a lower priority one.}
+    	\end{enumerate}
+    	
+    	It is not always possible to recover from deadlock. The operating system may check for deadlocks by checking the thread table for circularities. If a deadlock is detected, the OS will kill one of the locked processes until the deadlock is broken. This can obviously have severe implications for the program. Similarly, if deadlocks are not dealt with within the program, it may become unresponsive, forcing the user to kill the program manually.
+    	
+    	\subsection{Livelock}
+    	Livelock is similar to deadlock, except that tasks are still able to proceed. However, execution is useless in that tasks will not be able to make any meaningful progress. For example, ethernet, where collisions cause back-offs of exponentially increasing length (this variation in wait time will normally eventually break the lock). Where contention is low, probability of livelock is low enough to ignore (although this is not a suitable response in safety-critical situations). Livelock isn't as easily definable as deadlock, the system may appear to be functioning. Deadlocked threads cannot be scheduled, whereas livelocked ones can. If a `fair' scheduling algorithm is used, livelock can be avoided (e.g. if a guarantee is made that every request is eventually dealt with). 
+    	
+    	\subsection{Starvation}
+    	Starvation occurs if one or more tasks are `starved' of resources by other tasks. This might result from a poor choice of task priorities so that high priority tasks will hog resources that lower priority tasks also need, meaning that the lower priority tasks are never able to function. Even if the high-priority thread is blocked, the low-priority thread still can’t get hold of the resource it needs.
+    	
+    	\subsection{Priority inversion}
+    	This occurs if a high-priority task (A) is unable to access a resource which is held by a lower-priority task (B). If A suspends until the resource is free, B is able to proceed. This means that a low-priority process is taking precedence over a high-priority process. If thread A waits in a loop for the resource, the result is a perpetual livelock: B never runs because A is running, but A is always waiting for B.
+    	
+\chapter{Distributed Systems}
+	\section{Multi-processors}
+    	\subsection{Tightly coupled}
+    	\subsection{Loosely coupled}
+    	\subsection{Majority voting}
+	\subsection{Problems}
+ 		\subsection{Global state}
+    	\subsection{Network issues}
+    	\subsection{Mutual exclusion}
+    	\subsection{Deadlock}
+  	\subsection{How is it implemented}
+    	\subsection{Java}
+      		\subsubsection{RMI}
+      		\subsubsection{CORBA}
+      		\subsubsection{Jini}
+      		
+      		
+\chapter{Networking}
+  	\section{How is it implemented}
+    	\subsection{Java}
+      		\subsubsection{Client/server}
+      		\subsubsection{TCP/IP}
+        	\subsubsection{Sockets}
+        	\subsubsection{Socket servers}
+      		\subsubsection{UDP (Sockets, Packets)}
+      		\subsubsection{Multicasting}
+ 	\section{Internet fundamentals}
+    	\subsection{TCP/IP}
+    	\subsection{Ethernet}
+    	\subsection{ICMP}
+    	\subsection{RARP}
+    	\subsection{BOOTP}
+    	\subsection{DHCP}
+    	\subsection{Transport layer}
+    	\subsection{Name resolution/DNS}
+    	
+    	
+\chapter{Real-time}
+  	\section{What is a real-time system}
+  	\section{Embedded systems}
+  	
+  	
+\chapter{Security}
+  	\section{Password protection}
+	\section{Encryption}
+    	\subsection{Public-key}
+    	\subsection{Steganography}
+    	\subsection{SSL}
+  	\section{Types of attack}
+    	\subsection{Trojan}
+    	\subsection{Virus}
+    	\subsection{Worm}
+    	\subsection{Denial of service}
+    	\subsection{Mail bombing}
+    	\subsection{Phishing}
+    	\subsection{Keylogging}
+  	\section{Protection}
+
+\end{document}
