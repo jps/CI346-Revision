@@ -59,8 +59,10 @@ breaklines=true}
 % chapter header
 \renewcommand{\@makechapterhead}[1]
 {\vspace*{50\p@}{
-	\parindent \z@ \raggedright \normalfont	%\huge \bfseries \thechapter. #1
-	\huge \bfseries #1	\vspace{20pt}}}
+	\parindent \z@ \raggedright \normalfont
+	%\huge \bfseries \thechapter. #1
+	\huge \bfseries #1
+	\vspace{20pt}}}
 
 \setcounter{secnumdepth}{-1} 
 \onehalfspace
@@ -141,6 +143,42 @@ breaklines=true}
       		\subsubsection{Entries (rendezvous)}
       		\subsubsection{Protected records}
     	\subsection{Haskell}
+
+		Haskell supports both pure parallelism and explicit concurrency, however as rule of thumb use Pure Parallelism if possible, otherwise use Concurrency.
+
+		\subsubsection{Parallelism}
+
+			Pure parallelism (Control.Parallel), can be used to speed up pure (non-IO) parts of the program by speeding up a pure computation using multiple processors. Pure parallelism has these advantages:
+				\begin{itemize}
+					\item Guaranteed deterministic (same result every time)
+					\item no race conditions or deadlocks
+				\end{itemize}
+
+			\textbf{Map} is a high order function that applied a given function to each element in a list, this is often referred to as \emph{apply-to-all} , In haskell this is written as map \emph{function} list.
+
+
+
+			\textbf{Reduce} also known as fold, is a method of optimizing operations on lists for instance. 
+
+			The folding of the list [1,2,3,4,5] with the addition operator would result in 15, the sum of the elements of the list [1,2,3,4,5]. To a rough approximation, one can think of this fold as replacing the commas in the list with the + operation, giving 1 + 2 + 3 + 4 + 5.
+
+			In the example above, + is an associative operation, so the final result will be the same regardless of parenthesization, although the specific way in which it is calculated will be different. In the general case of non-associative binary functions, the order in which the elements are combined may influence the final result's value. On lists, there are two obvious ways to carry this out: either by combining the first element with the result of recursively combining the rest (called a right fold), or by combining the result of recursively combining all elements but the last one, with the last element (called a left fold). This corresponds to a binary operator being either right-associative or left-associative, in Haskell's or Prolog's terminology. With a right fold, the sum would be parenthesized as 1 + (2 + (3 + (4 + 5))), whereas with a left fold it would be parenthesized as (((1 + 2) + 3) + 4) + 5.
+
+			 In practice, it is convenient and natural to have an initial value which in the case of a right fold is used when one reaches the end of the list, and in the case of a left fold is what is initially combined with the first element of the list. In the example above, the value 0 (the additive identity) would be chosen as an initial value, giving 1 + (2 + (3 + (4 + (5 + 0)))) for the right fold, and ((((0 + 1) + 2) + 3) + 4) + 5 for the left fold.
+			
+
+
+      		\subsubsection{Concurrency}
+			Concurrency (Control.Concurrent): Multiple threads of control that execute "at the same time".
+
+				\begin{itemize}
+					\item Threads are in the IO monad
+					\item IO operations from multiple threads are interleaved non-deterministically
+					\item communication between threads must be explicitly programmed
+					\item Threads may execute on multiple processors simultaneously
+					\item Dangers: race conditions and deadlocks
+				\end{itemize}
+
     	
   	\section{Issues Associated With Concurrency}
   	
