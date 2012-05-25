@@ -215,11 +215,25 @@ loop
 	
     	\paragraph{Tightly coupled}	Multiple processors sharing a single memory (e.g. SMP, quad Pentium motherboards). Tightly coupled systems are good for performance (i.e. more processors = faster), but bad for fault tolerance, as the system relies on shared resources. Tightly coupled systems require simpler coordination of tasks, as have shared memory (using some form of semaphore system).
     	
-    	\paragraph{Loosely coupled} Distributed networks with no shared memory (e.g. Beowulf).
+    	\paragraph{Loosely coupled} Distributed networks with no shared memory (e.g. Beowulf), with nodes (processors) communicating over a Local Area Network. This makes coordination more difficult (as there's no shared memory), but also means that fault tolerance is possible by introducing duplicate nodes. An issue which is introduced with loosely-coupled systems is that of whether to use homogenous (with identical processors) or heterogenous (different processors) systems. Homogenous processors are able to compare results at regular intervals, using a `majority' voting process allows any failing nodes to be identified. However, if the voting is done through a central unit, failures in that unit will fail the whole system. This can be solved using a distributed analog voting mechanism whereby each unit generates an analog signal (e.g. a voltage) which is applied to one or more common carriers. The resultant voltage indicates result. Introducing heterogenous systems can introduce extra communication difficulties based on the systems' architecture (e.g. using big endian vs. little endian). Fault tolerance is also more difficult, as processor speeds will likely vary, development costs are much higher, and truly independent development is difficult to achieve.
     	
+    	\paragraph{Example Use-case: The (Now Defunct) Space Shuttle} 
+    	Uses four main processors in a homogenous system, and uses majority voting. If one processor fails, it leaves three others while it is being replaced, the remaining three can continue majority voting. Also has one heterogenous backup processor which is used in emergencies when two of the four main processors have failed (kept as a warm standby, monitoring the main processors to keep up to date).
     	
-    	\subsection{Majority voting}
-	\subsection{Problems}
+   	\subsection{Problems}
+   	
+   	Loosely coupled systems have most issues with reliability. One reason being that there's no common timebase; each processor's view of the system may be inconsistent. This can be solved by delaying message passing.\\
+   	
+   	\textbf{Failure modes}: transient, permanent, intermittent; fail safe (known state), fail soft (‘graceful degradation’); fail uncontrolled, fail late (correct values but too late), fail silent (no values), fail stop (no values, failure visible to other nodes)
+   	\emph{Uncontrolled intermittent failures are the hardest to deal with, as parts of the system will act `traitorously'}
+
+\paragraph{Issues to be addressed:}
+\begin{itemize}
+	\item Ensuring a consistent timebase so that all processors can tell what order events occur in.	\item Ensuring shared resources are not accessed by multiple processors at the same time (distributed mutual exclusion).	\item Need to be able to recognise situations where one processor deadlocks another (distributed deadlock detection).
+
+\end{itemize}
+   	
+The basic problem is that distributed systems are nondeterministic (i.e. the outcome can be unpredictable due to timing issues). There are two types of nondeterminism: angelic (an ‘angel’/external agent ensures that the best choice is always made), and demonic (no assumption can be made about the choice the ‘demon’ will make). Angelic determinism is generally impossible to achieve, were it possible, any NP-complete problem could be solved in polynomial time by always selecting the ‘correct’ path to follow. The alternative is to add mechanisms to make things deterministic.   	
  		\subsection{Global state}
     	\subsection{Network issues}
     	\subsection{Mutual exclusion}
