@@ -144,12 +144,19 @@ breaklines=true}
     	\subsection{Ada}
     	
       		\subsubsection{Tasks}
-      		Tasks are Ada's equivalent of Java's threads; each separate task representing a separate `thread' of execution. Tasks can communicate with each other via `entry' calls. Entry points are declared in the task spec– a task declares ‘entries’ (like procedures) in the task spec in the form of ‘accept’ statements. An entry call causes a ‘rendezvous’ between the called task and its caller. The caller waits for the task to accept the call – the accept statement waits for a call (see Listing).         
+      		Tasks are Ada's equivalent of Java's threads; each separate task representing a separate `thread' of execution. Tasks can communicate with each other via `entry' calls. Entry points are declared in the task spec
+– a task declares ‘entries’ (like procedures) in the task spec in the form of ‘accept’ statements. An entry call causes a ‘rendezvous’ between the called task and its caller. The caller waits for the task to accept the call – the accept statement waits for a call (see Listing).
+         
 \begin{lstlisting}[label=some-code,caption=Ada's Accept Statement] 
 loop 
 	select
-		accept Show (Message : in String) do			Put_Line(Message);		end Show; or		accept Stop;        exit;
-	end select;end loop;
+		accept Show (Message : in String) do
+			Put_Line(Message);
+		end Show; or
+		accept Stop;
+        exit;
+	end select;
+end loop;
 \end{lstlisting}
       		
       		Entries require a client/server relationship, as they only communicate between one task and another. This is inefficient when just accessing shared data (tasks must be rescheduled to actually pass the data).
@@ -173,7 +180,43 @@ loop
 				\begin{itemize}
 					\item Guaranteed deterministic (same result every time)
 					\item no race conditions or deadlocks
+					\item Software Transactional Memory (STM)
 				\end{itemize}
+
+
+The following code has been parallelized in haskell, this has been done do by importing the Control.Parallel libary and by using \textbf{par} and \textbf{pseq} combinators. 
+
+\textbf{par} tells the compiler that the values can be calculated in parallel
+
+\textbf{pseq} forces the evaluation of c 
+
+
+\begin{lstlisting}[label=some-code,caption=Parallel code in haskell] 
+
+
+import Control . Parallel
+
+main = a `par ` b `par ` c `pseq ` print (a + b + c)
+where a = ack 3 10
+b = fac 42
+c = fib 34
+
+fac 0 = 1
+fac n = n * fac (n -1)
+
+ack 0 n = n +1
+ack m 0 = ack (m -1) 1
+ack m n = ack (m -1) ( ack m (n -1) )
+
+fib 0 = 0
+fib 1 = 1
+fib n = fib (n -1) + fib (n -2)
+
+
+
+\end{lstlisting}
+
+
 
 			\textbf{Map} is a high order function that applied a given function to each element in a list, this is often referred to as \emph{apply-to-all} , In haskell this is written as map \emph{function} list.
 
@@ -241,7 +284,8 @@ loop
 \textbf{Solving the problem:} Deadlock can be avoided by providing one extra chopstick or one fewer chair, having one left-handed philosopher, allowing philosophers to snatch chopsticks from each other, philosophers put chopstick down if the other isn’t available, or allowing chopsticks to be shared.   
     	 
  	 	Livelock only requires circular waiting for unshareable resources, so can be avoided by picking up left chopstick and put it down again if chopstick not available, or snatching chopstick from neighbours.
-    	 Another solution could be to provide a bottle of soy sauce, whereby philosophers can only pick up chopsticks if they have the bottle, sauce is put down sauce after both chopsticks are collected. The bottle ensures mutual exclusion for the critical act of picking up a chopstick.
+    	 
+Another solution could be to provide a bottle of soy sauce, whereby philosophers can only pick up chopsticks if they have the bottle, sauce is put down sauce after both chopsticks are collected. The bottle ensures mutual exclusion for the critical act of picking up a chopstick.
     	
 \chapter{Distributed Systems}
 
@@ -286,12 +330,16 @@ loop
     	\subsection{Ethernet}
     	Ethernet is a broadcast medium which has become the standard for local area networks. Ethernet stations communicate by sending each other data packets (individual blocks of data). Each Ethernet station is given a 48-bit MAC address to identify it on the network. With ethernet, every frame sent is received by every system connected to the Ethernet (including the transmitter).\\
     	
-\noindent\textbf{Frame format:}preamble - alternating 0s and 1s for synchronisation (8 octets), destination (6 octets), source (6 octets), frame type (2 octets), data (64-1500 octets), CRC (4 octets)
+\noindent\textbf{Frame format:}
+preamble - alternating 0s and 1s for synchronisation (8 octets), destination (6 octets), source (6 octets), frame type (2 octets), data (64-1500 octets), CRC (4 octets)
     	    	
 \ \\ \textbf{Carrier Sense Multiple Access with Collision Detection (CSMA/CD):} Used to regulate access: A node waiting to transmits monitors the carrier signal waiting for the line to become idle, at which point it starts transmitting. If another node starts transmitting at the same time, the frame is garbled (detectable by the senders). When a collision is detected, each transmitting node ‘backs off’ for a random period. This randomness reduces chance of another collision (in the case of further collisions, the maximum period for back-off is doubled - exponential). As the network load increases, collisions become more frequent, causing more nodes to back off. This causes the network to slow down, but should not fail completely.
     	
     	\subsection{Internet Addresses}
-    	Addresses are IPv4 (or 32-bit), consisting of 4 octets expressed as n.n.n.n (e.g. 127.0.0.1). The next-gen IPv6 (128-bit) consists of 6 octets (giving $\sim$1038 unique addresses).• Address divided into network and machine number:– subnet mask specifies how it is divided
+    	Addresses are IPv4 (or 32-bit), consisting of 4 octets expressed as n.n.n.n (e.g. 127.0.0.1). The next-gen IPv6 (128-bit) consists of 6 octets (giving $\sim$1038 unique addresses).
+
+• Address divided into network and machine number:
+– subnet mask specifies how it is divided
     	
     	\subsection{ICMP}
     	\subsection{RARP}
@@ -329,14 +377,19 @@ loop
   
   	
   	\section{Embedded systems}
-  	Real time systems are often computer systems which are part of (embedded in) a larger system– e.g. process control, autopilot, manufacturing• ‘Embedded’ often used as a synonym for real time
+  	Real time systems are often computer systems which are part of (embedded in) a larger system
+– e.g. process control, autopilot, manufacturing
+• ‘Embedded’ often used as a synonym for real time
   	
   	\section{Characteristics}
   	
   	\begin{itemize}
-  		\item Needs to cope with a variety of external events (where software is becoming frequently large and complex)		\item Reliable and safe: able to detect and recover from failures		\item Need to interact with external hardware
+  		\item Needs to cope with a variety of external events (where software is becoming frequently large and complex)
+		\item Reliable and safe: able to detect and recover from failures
+		\item Need to interact with external hardware
   		\item Need to be able to specify timing requirements (when to perform actions, when to complete actions by, what to do when deadlines are missed, importance of granularity (e.g. IBM PC clock granularity is 55ms = 100yds at 600mph)
-  		\item Event-driven rather than process-driven (external events must be dealt with as they occur; event ordering is not generally predictable)		\item Generally uses concurrent processes (each event source can be handled by a separate process)  
+  		\item Event-driven rather than process-driven (external events must be dealt with as they occur; event ordering is not generally predictable)
+		\item Generally uses concurrent processes (each event source can be handled by a separate process)  
   		\item Must have predictable response times (factors to consider: caching/pipelining affect program speed, worst case is an order of magnitude slower than the average, fast programs \& external time)
   		\item Code must be safe (i.e. nothing `bad' will happen) and live (i.e. something `good' will eventually happen). `Eventually' must be able to be upper-bounded, as livelock can particularly be an issue in real-time systems.
   	\end{itemize}
