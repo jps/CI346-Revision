@@ -140,7 +140,7 @@ There are many different paradigms in computer programming here are some example
 
 		A programming language is said to use static typing when type checking is performed during compile-time as opposed to run-time. Statically typed languages include ActionScript 3, Ada, C, D, Eiffel, F\#, Fortran, Go, Haskell, haXe, JADE, Java, ML, Objective-C, OCaml, Pascal, and Scala. C++ is statically typed, aside from its run-time type information system. The C\# type system performs static-like compile-time type checking, but also includes full runtime type checking. 
 
-		Static typing is a limited form of program verification (see type safety): accordingly, it allows many type errors to be caught early in the development cycle. Static type checkers evaluate only the type information that can be determined at compile time, but are able to verify that the checked conditions hold for all possible executions of the program, which eliminates the need to repeat type checks every time the program is executed. Program execution may also be made more  efficient (e.g. faster or taking reduced memory) by omitting runtime type checks and enabling other optimizations.
+		Static typing is a limited form of program verification (see type safety): accordingly, it allows many type errors to be caught early in the development cycle. Static type checkers evaluate only the type information that can be determined at compile time, but are able to verify that the checked conditions hold for all possible executions of the program, which eliminates the need to repeat type checks every time the program is executed. Program execution may also be made more  efficient (e.g. faster or taking reduced memory) by omitting runtime type checks and enabling other optimisations.
 
 
 		\subsubsection{Dynamic}
@@ -158,13 +158,11 @@ There are many different paradigms in computer programming here are some example
 		Development in dynamically typed languages is often supported by programming practices such as unit testing. Testing is a key practice in professional software development, and is particularly important in dynamically typed languages. In practice, the testing done to ensure correct program operation can detect a much wider range of errors than static type-checking, but full test coverage over all possible executions of a program (including timing, user inputs, etc.), if even  possible, would be extremely costly and impractical. Static typing helps by providing strong guarantees of a particular subset of commonly-made errors never occurring
 
 
-		\subsubsection{Strong Vs Strong}
+		\subsubsection{Strong Vs Weak}
 			
 		Most generally, ``strong typing" implies that the programming language places severe restrictions on the intermixing that is permitted to occur, preventing the compiling or running of source code which uses data in what is considered to be an invalid way. For instance, an addition operation may not be used with an integer and string values; a procedure which operates upon linked lists may not be used upon numbers. However, the nature and strength of these restrictions is highly variable.
 
-\textbf{Weak Typing}
-
-\begin{lstlisting}
+\begin{lstlisting}[label=some-code,caption=Weak Typing] 
 a = 2
 b = "2"
  
@@ -172,8 +170,7 @@ concatenate(a, b) # Returns "22"
 add(a, b)         # Returns 4
 \end{lstlisting}
 
-\textbf{Strong Typing}
-\begin{lstlisting}
+\begin{lstlisting}[label=some-code,caption=Strong Typing] 
 a = 2
 b = "2"
  
@@ -182,10 +179,6 @@ add(a, b)             # Type Error
 concatenate(str(a), b) # Returns "22"
 add(a, int(b))         # Returns 4
 \end{lstlisting}
-
-
-
-
 
 	\subsection{Java}
 	
@@ -472,7 +465,7 @@ fib n = fib (n -1) + fib (n -2)
   		
   		\noindent To implement, simple extend \emph{Remote}, and add \emph{RemoteException} handling.
   		
-\begin{lstlisting}[label=some-code,caption=Parallel code in haskell] 
+\begin{lstlisting}[label=some-code,caption=Implementing RMI] 
 /**
  * The interface
  */
