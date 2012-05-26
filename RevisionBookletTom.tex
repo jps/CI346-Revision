@@ -59,8 +59,10 @@ breaklines=true}
 % chapter header
 \renewcommand{\@makechapterhead}[1]
 {\vspace*{50\p@}{
-	\parindent \z@ \raggedright \normalfont	%\huge \bfseries \thechapter. #1
-	\huge \bfseries #1	\vspace{20pt}}}
+	\parindent \z@ \raggedright \normalfont
+	%\huge \bfseries \thechapter. #1
+	\huge \bfseries #1
+	\vspace{20pt}}}
 
 \setcounter{secnumdepth}{-1} 
 \onehalfspace
@@ -116,7 +118,48 @@ breaklines=true}
 %\section{What Makes a Good Program}
 %\section{History(?)}
 \chapter{Programming Languages}
+
+There are many different paradigms in computer programming here are some examples
+
+
+\begin{description}
+
+\item[Imperative] C
+\item[Declarative] SQL
+\item[Object Orientated] Ada, C++, C\#, Java
+\item[Logical] Prolog
+\item[Functional] Haskell, F\#, Lisp, Clojure (if your a real hipster)
+
+\end{description}
+
+
 \section{A comparison between Java, Ada, Haskell and Prolog}
+
+	\subsection{Java}
+
+
+	\subsection{Ada}
+
+
+	\subsection{C++}
+
+
+	\subsection{Haskell}
+
+
+	Haskell is a functional, lazy/non-strict, modular language.
+
+	Here are some key features of Haskell
+
+	\begin{itemize}
+	\item Recursion over iteration, Haskell does not have loops and because of this it uses recursion iterate through lists. Haskell makes use of tail cull recursion which allows the program to recurse indefinitely with out causing a stack overflow that would occur in traditional imperial and object orientated languages.
+	\item Sparks, Haskell Threads and Worker threads. Haskell deals with concurrency in a unique was. when a task is to be performed it turned into a spark. A Spark is a essentially a task that is added to a task queue.  There sparks are then ignited by Haskell's threads which are then actioned by a worked thread. This way of delegating tasks offerers very efficient multi core performance which very minimal over head in code due to the fact the complex delegation of how to perform tasks is calculated automatically.
+
+	\end{itemize}
+	
+
+
+	\subsection{Prolog}
 
 
 \chapter{Concurrency}
@@ -142,12 +185,19 @@ breaklines=true}
     	\subsection{Ada}
     	
       		\subsubsection{Tasks}
-      		Tasks are Ada's equivalent of Java's threads; each separate task representing a separate `thread' of execution. Tasks can communicate with each other via `entry' calls. Entry points are declared in the task spec– a task declares ‘entries’ (like procedures) in the task spec in the form of ‘accept’ statements. An entry call causes a ‘rendezvous’ between the called task and its caller. The caller waits for the task to accept the call – the accept statement waits for a call (see Listing).         
+      		Tasks are Ada's equivalent of Java's threads; each separate task representing a separate `thread' of execution. Tasks can communicate with each other via `entry' calls. Entry points are declared in the task spec
+– a task declares ‘entries’ (like procedures) in the task spec in the form of ‘accept’ statements. An entry call causes a ‘rendezvous’ between the called task and its caller. The caller waits for the task to accept the call – the accept statement waits for a call (see Listing).
+         
 \begin{lstlisting}[label=some-code,caption=Ada's Accept Statement] 
 loop 
 	select
-		accept Show (Message : in String) do			Put_Line(Message);		end Show; or		accept Stop;        exit;
-	end select;end loop;
+		accept Show (Message : in String) do
+			Put_Line(Message);
+		end Show; or
+		accept Stop;
+        exit;
+	end select;
+end loop;
 \end{lstlisting}
       		
       		Entries require a client/server relationship, as they only communicate between one task and another. This is inefficient when just accessing shared data (tasks must be rescheduled to actually pass the data).
@@ -275,7 +325,8 @@ fib n = fib (n -1) + fib (n -2)
 \textbf{Solving the problem:} Deadlock can be avoided by providing one extra chopstick or one fewer chair, having one left-handed philosopher, allowing philosophers to snatch chopsticks from each other, philosophers put chopstick down if the other isn’t available, or allowing chopsticks to be shared.   
     	 
  	 	Livelock only requires circular waiting for unshareable resources, so can be avoided by picking up left chopstick and put it down again if chopstick not available, or snatching chopstick from neighbours.
-    	 Another solution could be to provide a bottle of soy sauce, whereby philosophers can only pick up chopsticks if they have the bottle, sauce is put down sauce after both chopsticks are collected. The bottle ensures mutual exclusion for the critical act of picking up a chopstick.
+    	 
+Another solution could be to provide a bottle of soy sauce, whereby philosophers can only pick up chopsticks if they have the bottle, sauce is put down sauce after both chopsticks are collected. The bottle ensures mutual exclusion for the critical act of picking up a chopstick.
     	
 \chapter{Distributed Systems}
 
@@ -336,19 +387,69 @@ The basic problem is that distributed systems are nondeterministic (i.e. the out
     	\subsection{Ethernet}
     	Ethernet is a broadcast medium which has become the standard for local area networks. Ethernet stations communicate by sending each other data packets (individual blocks of data). Each Ethernet station is given a 48-bit MAC address to identify it on the network. With ethernet, every frame sent is received by every system connected to the Ethernet (including the transmitter).\\
     	
-\noindent\textbf{Frame format:}preamble - alternating 0s and 1s for synchronisation (8 octets), destination (6 octets), source (6 octets), frame type (2 octets), data (64-1500 octets), CRC (4 octets)
+\noindent\textbf{Frame format:}
+preamble - alternating 0s and 1s for synchronisation (8 octets), destination (6 octets), source (6 octets), frame type (2 octets), data (64-1500 octets), CRC (4 octets)
     	    	
 \ \\ \textbf{Carrier Sense Multiple Access with Collision Detection (CSMA/CD):} Used to regulate access: A node waiting to transmits monitors the carrier signal waiting for the line to become idle, at which point it starts transmitting. If another node starts transmitting at the same time, the frame is garbled (detectable by the senders). When a collision is detected, each transmitting node ‘backs off’ for a random period. This randomness reduces chance of another collision (in the case of further collisions, the maximum period for back-off is doubled - exponential). As the network load increases, collisions become more frequent, causing more nodes to back off. This causes the network to slow down, but should not fail completely.
     	
     	\subsection{Internet Addresses}
-    	Addresses are IPv4 (or 32-bit), consisting of 4 octets expressed as n.n.n.n (e.g. 127.0.0.1). The next-gen IPv6 (128-bit) consists of 6 octets (giving $\sim$1038 unique addresses).• Address divided into network and machine number:– subnet mask specifies how it is divided
+    	Addresses are IPv4 (or 32-bit), consisting of 4 octets expressed as n.n.n.n (e.g. 127.0.0.1). The next-gen IPv6 (128-bit) consists of 6 octets (giving $\sim$1038 unique addresses).
+
+• Address divided into network and machine number:
+– subnet mask specifies how it is divided
     	
     	\subsection{ICMP}
+	Internet Control Message Protocol (ICMP) is one of the core protocols of the Internet Protocol Suite. It is chiefly used by the operating systems of networked computers to send error messages indicating, for example, that a requested service is not available or that a host or router could not be reached. ICMP can also be used to relay query messages. It is assigned protocol number 1. ICMP differs from transport protocols such as TCP and UDP in that it is not typically used to exchange data between systems, nor is it regularly employed by end-user network applications (with the exception of some diagnostic tools like ping and traceroute).
+	ICMP for Internet Protocol version 4 (IPv4) is also known as ICMPv4. IPv6 has a similar protocol, ICMPv6.
+
     	\subsection{RARP}
+	Reverse Address Resolution Protocol is an obsolete computer networking protocol used by a host computer to request its       	Internet Protocol (IPv4) address from an administrative host, when it has available its Link Layer or hardware address, such as a MAC address.
+	 It has been rendered obsolete by the Bootstrap Protocol (BOOTP) and the modern Dynamic Host Configuration Protocol (DHCP), which both support a much greater feature set than RARP.
+
     	\subsection{BOOTP}
-    	\subsection{DHCP}
+
+	The Bootstrap Protocol, or BOOTP, is a network protocol used by a network client to obtain an IP address from a configuration server. The BOOTP protocol was originally defined in RFC 951.
+	BOOTP is usually used during the bootstrap process when a computer is starting up. A BOOTP configuration server assigns an IP address to each client from a pool of addresses. BOOTP uses the User Datagram Protocol (UDP) as a transport on IPv4 networks only.	
+
+	Historically, BOOTP has also been used for Unix-like diskless workstations to obtain the network location of their boot image in addition to an IP address, and also by enterprises to roll out a pre-configured client (e.g., Windows) installation to newly installed PCs.
+
+	 Originally requiring the use of a boot floppy disk to establish the initial network connection, manufacturers of network cards later embedded the protocol in the BIOS of the interface cards as well as system boards with on-board network adapters, thus allowing direct network booting.
+
+	 In 2005, users with an interest in diskless stand-alone media center PCs have shown new interest in this method of booting a Windows operating system.
+
+ 	The Dynamic Host Configuration Protocol (DHCP) is a more advanced protocol for the same purpose and has superseded the use of BOOTP. Most DHCP servers also function as BOOTP servers.
+    	
+
+	\subsection{DHCP}
+	Dynamic Host Configuration Protocol  is a network configuration protocol for hosts on Internet Protocol (IP) networks. Computers that are connected to IP networks must be configured before they can communicate with other hosts. The most essential information needed is an IP address, and a default route and routing prefix. DHCP eliminates the manual task by a network administrator. It also provides a central database of devices that are connected to the network and eliminates duplicate resource assignments.
+
+	  In addition to IP addresses, DHCP also provides other configuration information, particularly the IP addresses of local Domain Name Server (DNS), network boot servers, or other service hosts.
+
+	 DHCP is used for IPv4 as well as IPv6. While both versions serve much the same purpose, the details of the protocol for IPv4 and IPv6 are sufficiently different that they may be considered separate protocols.[1]
+
+	 Hosts that do not use DHCP for address configuration may still use it to obtain other configuration information. Alternatively, IPv6 hosts may use stateless address autoconfiguration. IPv4 hosts may use link-local addressing to achieve limited local connectivity.
+
+
     	\subsection{Transport layer}
+	 In computer networking, the transport layer or layer 4 provides end-to-end communication services for applications[1] within a layered architecture of network components and protocols. The transport layer provides convenient services such as connection-oriented data stream support, reliability, flow control, and multiplexing.
+	
+	 The most well-known transport protocol is the Transmission Control Protocol (TCP). It lent its name to the title of the entire Internet Protocol Suite, TCP/IP. It is used for connection-oriented transmissions, whereas the connectionless User Datagram Protocol (UDP) is used for simpler messaging transmissions. TCP is the more complex protocol, due to its stateful design incorporating reliable transmission and data stream services. Other prominent protocols in this group are the Datagram Congestion Control Protocol (DCCP) and the Stream Control Transmission Protocol (SCTP).
+
+
     	\subsection{Name resolution/DNS}
+	Domain Name System  is a hierarchical distributed naming system for computers, services, or any resource connected to the Internet or a private network. It associates various information with domain names assigned to each of the participating entities.
+
+	  A Domain Name Service resolves queries for domain names (which are easier to understand and utilize when accessing the internet) into IP addresses for the purpose of locating computer services and devices worldwide.
+
+	 An often-used analogy to explain the Domain Name System is that it serves as the phone book for the Internet by translating human-friendly computer hostnames into IP addresses. For example, the domain name www.example.com translates to the addresses 192.0.43.10 (IPv4) and 2620:0:2d0:200::10 (IPv6).
+	
+	The Domain Name System distributes the responsibility of assigning domain names and mapping those names to IP addresses by designating authoritative name servers for each domain. Authoritative name servers are assigned to be responsible for their particular domains, and in turn can assign other authoritative name servers for their sub-domains. This mechanism has made the DNS distributed and fault tolerant and has helped avoid the need for a single central register to be continually consulted and updated.
+
+	 In general, the Domain Name System also stores other types of information, such as the list of mail servers that accept email for a given Internet domain. By providing a worldwide, distributed keyword-based redirection service, the Domain Name System is an essential component of the functionality of the Internet.
+
+	 Other identifiers such as RFID tags, UPCs, international characters in email addresses and host names, and a variety of other identifiers could all potentially use DNS.
+
+	 The Domain Name System also specifies the technical functionality of this database service. It defines the DNS protocol, a detailed specification of the data structures and communication exchanges used in DNS, as part of the Internet Protocol Suite.
 
   	\section{How is it implemented}
   	
@@ -379,14 +480,19 @@ The basic problem is that distributed systems are nondeterministic (i.e. the out
   
   	
   	\section{Embedded systems}
-  	Real time systems are often computer systems which are part of (embedded in) a larger system– e.g. process control, autopilot, manufacturing• ‘Embedded’ often used as a synonym for real time
+  	Real time systems are often computer systems which are part of (embedded in) a larger system
+– e.g. process control, autopilot, manufacturing
+• ‘Embedded’ often used as a synonym for real time
   	
   	\section{Characteristics}
   	
   	\begin{itemize}
-  		\item Needs to cope with a variety of external events (where software is becoming frequently large and complex)		\item Reliable and safe: able to detect and recover from failures		\item Need to interact with external hardware
+  		\item Needs to cope with a variety of external events (where software is becoming frequently large and complex)
+		\item Reliable and safe: able to detect and recover from failures
+		\item Need to interact with external hardware
   		\item Need to be able to specify timing requirements (when to perform actions, when to complete actions by, what to do when deadlines are missed, importance of granularity (e.g. IBM PC clock granularity is 55ms = 100yds at 600mph)
-  		\item Event-driven rather than process-driven (external events must be dealt with as they occur; event ordering is not generally predictable)		\item Generally uses concurrent processes (each event source can be handled by a separate process)  
+  		\item Event-driven rather than process-driven (external events must be dealt with as they occur; event ordering is not generally predictable)
+		\item Generally uses concurrent processes (each event source can be handled by a separate process)  
   		\item Must have predictable response times (factors to consider: caching/pipelining affect program speed, worst case is an order of magnitude slower than the average, fast programs \& external time)
   		\item Code must be safe (i.e. nothing `bad' will happen) and live (i.e. something `good' will eventually happen). `Eventually' must be able to be upper-bounded, as livelock can particularly be an issue in real-time systems.
   	\end{itemize}
