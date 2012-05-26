@@ -116,7 +116,126 @@ breaklines=true}
 %\section{What Makes a Good Program}
 %\section{History(?)}
 \chapter{Programming Languages}
+
+There are many different paradigms in computer programming here are some examples
+
+
+\begin{description}
+
+\item[Imperative] C
+\item[Declarative] SQL, CSS
+\item[Object Orientated] Ada, C++, C\#, Java
+\item[Logical] Prolog
+\item[Functional] Haskell, F\#, Lisp, Clojure (if your a real hipster)
+
+\end{description}
+
+
 \section{A comparison between Java, Ada, Haskell and Prolog}
+
+
+	\subsection{Typing Systems}
+
+		\subsubsection{Static}
+
+		A programming language is said to use static typing when type checking is performed during compile-time as opposed to run-time. Statically typed languages include ActionScript 3, Ada, C, D, Eiffel, F\#, Fortran, Go, Haskell, haXe, JADE, Java, ML, Objective-C, OCaml, Pascal, and Scala. C++ is statically typed, aside from its run-time type information system. The C\# type system performs static-like compile-time type checking, but also includes full runtime type checking. 
+
+		Static typing is a limited form of program verification (see type safety): accordingly, it allows many type errors to be caught early in the development cycle. Static type checkers evaluate only the type information that can be determined at compile time, but are able to verify that the checked conditions hold for all possible executions of the program, which eliminates the need to repeat type checks every time the program is executed. Program execution may also be made more  efficient (e.g. faster or taking reduced memory) by omitting runtime type checks and enabling other optimizations.
+
+
+		\subsubsection{Dynamic}
+		
+		A programming language is said to be dynamically typed when the majority of its type checking is performed at run-time as opposed to at compile-time. In dynamic typing values have types, but variables do not; that is, a variable can refer to a value of any type. Dynamically typed languages include APL, Erlang, Groovy, JavaScript, Lisp, Lua, MATLAB, PHP, Prolog, Python, Ruby, Smalltalk and Tcl.
+
+ 	 	Implementations of dynamically-typed languages generally associate run-time objects with "tags" containing their type information. This run-time classification is then used to implement type checks and dispatch overloaded functions, but can also enable pervasive uses of dynamic dispatch, late binding and similar idioms that would be cumbersome at best in a statically-typed language, requiring the use of variant types or similar features.
+
+ 		More broadly, as explained below, dynamic typing can improve support for dynamic programming language features, such as generating types and functionality based on run-time data. (Nevertheless, dynamically typed languages need not support any or all such features, and some dynamic programming languages are statically typed.) On the other hand, dynamic typing provides fewer a priori guarantees: a dynamically typed language accepts and attempts to execute some programs that would be ruled as invalid by a static type checker, either due to errors in the program or due to static type checking being too conservative.
+
+ 		 Dynamic typing may result in runtime type errors—that is, at runtime, a value may have an unexpected type, and an operation nonsensical for that type is applied. Such errors may occur long after the place where the programming mistake was made—that is, the place where the wrong type of data passed into a place it should not have. This may make the bug difficult to locate.
+
+ 		Dynamically typed language systems' run-time checks can potentially be more sophisticated than those of statically typed languages, as they can use dynamic information as well as any information from the source code. On the other hand,  runtime checks only assert that conditions hold in a particular execution of the program, and the checks are repeated for every execution of the program.
+
+		Development in dynamically typed languages is often supported by programming practices such as unit testing. Testing is a key practice in professional software development, and is particularly important in dynamically typed languages. In practice, the testing done to ensure correct program operation can detect a much wider range of errors than static type-checking, but full test coverage over all possible executions of a program (including timing, user inputs, etc.), if even  possible, would be extremely costly and impractical. Static typing helps by providing strong guarantees of a particular subset of commonly-made errors never occurring
+
+
+		\subsubsection{Strong Vs Strong}
+			
+		Most generally, ``strong typing" implies that the programming language places severe restrictions on the intermixing that is permitted to occur, preventing the compiling or running of source code which uses data in what is considered to be an invalid way. For instance, an addition operation may not be used with an integer and string values; a procedure which operates upon linked lists may not be used upon numbers. However, the nature and strength of these restrictions is highly variable.
+
+\textbf{Weak Typing}
+
+\begin{lstlisting}
+a = 2
+b = "2"
+ 
+concatenate(a, b) # Returns "22"
+add(a, b)         # Returns 4
+\end{lstlisting}
+
+\textbf{Strong Typing}
+\begin{lstlisting}
+a = 2
+b = "2"
+ 
+concatenate(a, b)     # Type Error
+add(a, b)             # Type Error
+concatenate(str(a), b) # Returns "22"
+add(a, int(b))         # Returns 4
+\end{lstlisting}
+
+
+
+
+
+	\subsection{Java}
+	
+	Java is a static, Object Orientated , structured, imperative, generic, reflective generic reflective language. 
+	
+	The language derives much of its syntax from C and C++ but has a simpler object model and fewer low-level facilities. Java applications are typically compiled to bytecode (class file) that can run on any Java Virtual Machine (JVM) regardless of computer architecture. Java is a general-purpose, concurrent, class-based, object-oriented language that is specifically designed to have as few implementation dependencies as possible. It is intended to let application developers "write once, run anywhere" (WORA), meaning that code that runs on one platform does not need to be recompiled to run on another. Java is currently one of the most popular programming languages in use.
+	
+	
+	\begin{itemize}
+	\item Multi threading
+	\item Networking Libraries
+	\
+	\end{itemize}
+	
+
+	\subsection{Ada}
+
+
+	\subsection{C++}
+
+
+	\subsection{Haskell}
+
+
+	Haskell is a functional, lazy/non-strict, modular language.
+
+	Haskell features lazy evaluation, pattern matching, list comprehension, type classes, and type polymorphism. It is a purely functional language, which means that in general, functions in Haskell do not have side effects. There is a distinct type for representing side effects, orthogonal to the type of functions. A pure function may return a side effect which is subsequently executed, modeling the impure functions of other languages.
+
+	Haskell has a strong, static type system based on Hindley–Milner type inference. Haskell's principal innovation in this area is to add type classes, which were originally conceived as a principled way to add overloading to the language, but have since found many more uses.
+
+	The type which represents side effects is an example of a monad. Monads are a general framework which can model different kinds of computation, including error handling, non-determinism, parsing, and software transactional memory. Monads are defined as ordinary datatypes, but Haskell provides some syntactic sugar for their use.
+	
+
+	\begin{itemize}
+	\item Recursion over iteration, Haskell does not have loops and because of this it uses recursion iterate through lists. Haskell makes use of tail cull recursion which allows the program to recurse indefinitely with out causing a stack overflow that would occur in traditional imperial and object orientated languages.
+	
+	\item Sparks, Haskell Threads and Worker threads. Haskell deals with concurrency in a unique way. when a task is to be performed it turned into a spark. A Spark is a essentially a task that is added to a task queue.  There sparks are then ignited by Haskell's threads which are then actioned by a worked thread. This way of delegating tasks offerers very efficient multi core performance which very minimal over head in code due to the fact the complex delegation of how to perform tasks is calculated automatically.
+
+	\end{itemize}
+	
+
+
+	\subsection{Prolog}
+	Prolog is a dynamically typed,general purpose logic programming language associated with artificial intelligence and computational linguistics. In Prolog logic is expressed as sets of facts and rules.
+	
+	Prolog features a built in back tracking engine which allows of easy evaluation of large rule sets, this gives Prolog a form of overloading on rules. 
+	
+	Prolog is tail call recursive with iteration handled in a similar way to Haskell.
+	
+	Prolog has many different implementations SWI-Prolog and Win-Prolog are two of these. Some Prolog implementations support networking which allow the creation of distributed systems. 
 
 
 \chapter{Concurrency}
@@ -322,7 +441,8 @@ fib n = fib (n -1) + fib (n -2)
     	There may be an inconsistent view of the system due to a lack of global time. For example, node A may report it has resource X and is waiting for Y, while node B may report it has resource Y and is waiting for X (these may not relate to the state of the system at the same time). This could be solved using a centralised algorithm (deadlock detector), with messages to the detector consisting of two parts: a table of threads waiting for node’s resources, and a table of resources waited for by node’s threads. These messages can be compared to check consistency. Each message essentially acting as a snapshot of the current system's threads/resources a a particular moment (like version control). Another approach could be to use a decentralised algorithm to create a trade dependancy chain: thread A requests X, but X is held by B. B is waiting for Y, but Y is held by C, C is waiting for etc. etc. 
     	
     	\subsection{Fault Tolerance}
-    	Even with these measures in place, faults can (and do) occur in these circumstances, it's importance to have some error detection/recovery in place. Communication between nodes can fail (i.e no more messages are received, or messages can be garbled). A checksum can be used in these circumstances to verify that the received message is in fact the same as that sent. The nodes themselves can also fail (generating faulty/incorrect messages), to detect this, each node can be compared agains the others.	
+    	Even with these measures in place, faults can (and do) occur in these circumstances, it's importance to have some error detection/recovery in place. Communication between nodes can fail (i.e no more messages are received, or messages can be garbled). A checksum can be used in these circumstances to verify that the received message is in fact the same as that sent. The nodes themselves can also fail (generating faulty/incorrect messages), to detect this, each node can be compared agains the others.
+	
   	\subsection{Distributed Processing}
   	Distributed processing allows processing to be carried out on a remote server. Two varieties considered here:
   	
@@ -341,7 +461,8 @@ fib n = fib (n -1) + fib (n -2)
 		
 		\noindent \textbf{Data Representation Issues Associated With RPC:}
 		\begin{itemize}
-			\item Different formats on different machines			\item Pointers lose their meaning if sent to a remote machine
+			\item Different formats on different machines
+			\item Pointers lose their meaning if sent to a remote machine
 		\end{itemize}
 		
 		\emph{To overcome this, the platform-independent External Data Representation (XDR)can be used for common data types. Another solution is to linearise linked data structures.}
@@ -355,10 +476,16 @@ fib n = fib (n -1) + fib (n -2)
 /**
  * The interface
  */
-import java.rmi.*;import java.rmi.server.*;   
+import java.rmi.*;
+import java.rmi.server.*;
+   
 public class Adder extends UnicastRemoteObject implements Adding 
-{    public Adder () throws RemoteException { }    		
-  	public int add (int a, int b) throws RemoteException	{ return a + b; }}
+{
+    public Adder () throws RemoteException { }
+    		
+  	public int add (int a, int b) throws RemoteException
+	{ return a + b; }
+}
   			
 /**
  * The server class
@@ -366,9 +493,12 @@ public class Adder extends UnicastRemoteObject implements Adding
 import java.rmi.*; 
   		
 public class AddServer 
-{	public static void main (String args[]) throws Exception 
-	{		Naming.rebind ("Adder", new Adder()); 
-	}}
+{
+	public static void main (String args[]) throws Exception 
+	{
+		Naming.rebind ("Adder", new Adder()); 
+	}
+}
 
 /**
  * The client class
@@ -376,8 +506,13 @@ public class AddServer
 import java.rmi.*;
 
 public class AddClient 
-{    public static void main (String args[]) throws Exception 
-	{      	Adding adder = (Adding)Naming.lookup("//192.168.11.3/Adder");		System.out.println(adder.add(123,456));	}}
+{
+    public static void main (String args[]) throws Exception 
+	{
+      	Adding adder = (Adding)Naming.lookup("//192.168.11.3/Adder");
+		System.out.println(adder.add(123,456));
+	}
+}
 \end{lstlisting}
   	
     	\subsection{Distributed Object Frameworks}
@@ -419,11 +554,57 @@ public class AddClient
     	Addresses are IPv4 (or 32-bit), consisting of 4 octets expressed as n.n.n.n (e.g. 127.0.0.1). The next-gen IPv6 (128-bit) consists of 6 octets (giving $\sim$1038 unique addresses).• Address divided into network and machine number:– subnet mask specifies how it is divided
     	
     	\subsection{ICMP}
+	Internet Control Message Protocol (ICMP) is one of the core protocols of the Internet Protocol Suite. It is chiefly used by the operating systems of networked computers to send error messages indicating, for example, that a requested service is not available or that a host or router could not be reached. ICMP can also be used to relay query messages. It is assigned protocol number 1. ICMP differs from transport protocols such as TCP and UDP in that it is not typically used to exchange data between systems, nor is it regularly employed by end-user network applications (with the exception of some diagnostic tools like ping and traceroute).
+	ICMP for Internet Protocol version 4 (IPv4) is also known as ICMPv4. IPv6 has a similar protocol, ICMPv6.
+
     	\subsection{RARP}
+	Reverse Address Resolution Protocol is an obsolete computer networking protocol used by a host computer to request its       	Internet Protocol (IPv4) address from an administrative host, when it has available its Link Layer or hardware address, such as a MAC address.
+	 It has been rendered obsolete by the Bootstrap Protocol (BOOTP) and the modern Dynamic Host Configuration Protocol (DHCP), which both support a much greater feature set than RARP.
+
     	\subsection{BOOTP}
-    	\subsection{DHCP}
+
+	The Bootstrap Protocol, or BOOTP, is a network protocol used by a network client to obtain an IP address from a configuration server. The BOOTP protocol was originally defined in RFC 951.
+	BOOTP is usually used during the bootstrap process when a computer is starting up. A BOOTP configuration server assigns an IP address to each client from a pool of addresses. BOOTP uses the User Datagram Protocol (UDP) as a transport on IPv4 networks only.	
+
+	Historically, BOOTP has also been used for Unix-like diskless workstations to obtain the network location of their boot image in addition to an IP address, and also by enterprises to roll out a pre-configured client (e.g., Windows) installation to newly installed PCs.
+
+	 Originally requiring the use of a boot floppy disk to establish the initial network connection, manufacturers of network cards later embedded the protocol in the BIOS of the interface cards as well as system boards with on-board network adapters, thus allowing direct network booting.
+
+	 In 2005, users with an interest in diskless stand-alone media center PCs have shown new interest in this method of booting a Windows operating system.
+
+ 	The Dynamic Host Configuration Protocol (DHCP) is a more advanced protocol for the same purpose and has superseded the use of BOOTP. Most DHCP servers also function as BOOTP servers.
+    	
+
+	\subsection{DHCP}
+	Dynamic Host Configuration Protocol  is a network configuration protocol for hosts on Internet Protocol (IP) networks. Computers that are connected to IP networks must be configured before they can communicate with other hosts. The most essential information needed is an IP address, and a default route and routing prefix. DHCP eliminates the manual task by a network administrator. It also provides a central database of devices that are connected to the network and eliminates duplicate resource assignments.
+
+	  In addition to IP addresses, DHCP also provides other configuration information, particularly the IP addresses of local Domain Name Server (DNS), network boot servers, or other service hosts.
+
+	 DHCP is used for IPv4 as well as IPv6. While both versions serve much the same purpose, the details of the protocol for IPv4 and IPv6 are sufficiently different that they may be considered separate protocols.[1]
+
+	 Hosts that do not use DHCP for address configuration may still use it to obtain other configuration information. Alternatively, IPv6 hosts may use stateless address autoconfiguration. IPv4 hosts may use link-local addressing to achieve limited local connectivity.
+
+
     	\subsection{Transport layer}
+	 In computer networking, the transport layer or layer 4 provides end-to-end communication services for applications[1] within a layered architecture of network components and protocols. The transport layer provides convenient services such as connection-oriented data stream support, reliability, flow control, and multiplexing.
+	
+	 The most well-known transport protocol is the Transmission Control Protocol (TCP). It lent its name to the title of the entire Internet Protocol Suite, TCP/IP. It is used for connection-oriented transmissions, whereas the connectionless User Datagram Protocol (UDP) is used for simpler messaging transmissions. TCP is the more complex protocol, due to its stateful design incorporating reliable transmission and data stream services. Other prominent protocols in this group are the Datagram Congestion Control Protocol (DCCP) and the Stream Control Transmission Protocol (SCTP).
+
+
     	\subsection{Name resolution/DNS}
+	Domain Name System  is a hierarchical distributed naming system for computers, services, or any resource connected to the Internet or a private network. It associates various information with domain names assigned to each of the participating entities.
+
+	  A Domain Name Service resolves queries for domain names (which are easier to understand and utilize when accessing the internet) into IP addresses for the purpose of locating computer services and devices worldwide.
+
+	 An often-used analogy to explain the Domain Name System is that it serves as the phone book for the Internet by translating human-friendly computer hostnames into IP addresses. For example, the domain name www.example.com translates to the addresses 192.0.43.10 (IPv4) and 2620:0:2d0:200::10 (IPv6).
+	
+	The Domain Name System distributes the responsibility of assigning domain names and mapping those names to IP addresses by designating authoritative name servers for each domain. Authoritative name servers are assigned to be responsible for their particular domains, and in turn can assign other authoritative name servers for their sub-domains. This mechanism has made the DNS distributed and fault tolerant and has helped avoid the need for a single central register to be continually consulted and updated.
+
+	 In general, the Domain Name System also stores other types of information, such as the list of mail servers that accept email for a given Internet domain. By providing a worldwide, distributed keyword-based redirection service, the Domain Name System is an essential component of the functionality of the Internet.
+
+	 Other identifiers such as RFID tags, UPCs, international characters in email addresses and host names, and a variety of other identifiers could all potentially use DNS.
+
+	 The Domain Name System also specifies the technical functionality of this database service. It defines the DNS protocol, a detailed specification of the data structures and communication exchanges used in DNS, as part of the Internet Protocol Suite.
 
   	\section{How is it implemented}
   	
