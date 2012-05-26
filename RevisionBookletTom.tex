@@ -281,44 +281,119 @@ fib n = fib (n -1) + fib (n -2)
 
 	\section{Multi-processors}
 	
-	Becoming increasingly common due to their decreasing cost. Adding extra processors (or cores) is a much more cost-effective way of increasing performance. 
-	
-	Many embedded real-time systems are ad-hoc distributed systems, configuration determined by overall structure of system being controlled (e.g. aircraft: cockpit systems, fuel systems, wings, tailplane). Processors must be located where they are needed and networked together.
+	Are becoming increasingly common due to their decreasing cost; adding extra processors (or cores) is a much more cost-effective way of increasing performance. Many embedded real-time systems are ad-hoc distributed systems, configuration determined by overall structure of system being controlled (e.g. aircraft: cockpit systems, fuel systems, wings, tailplane). Processors must be located where they are needed and networked together.
 	
     	\paragraph{Tightly coupled}	Multiple processors sharing a single memory (e.g. SMP, quad Pentium motherboards). Tightly coupled systems are good for performance (i.e. more processors = faster), but bad for fault tolerance, as the system relies on shared resources. Tightly coupled systems require simpler coordination of tasks, as have shared memory (using some form of semaphore system).
     	
-    	\paragraph{Loosely coupled} Distributed networks with no shared memory (e.g. Beowulf), with nodes (processors) communicating over a Local Area Network. This makes coordination more difficult (as there's no shared memory), but also means that fault tolerance is possible by introducing duplicate nodes. An issue which is introduced with loosely-coupled systems is that of whether to use homogenous (with identical processors) or heterogenous (different processors) systems. Homogenous processors are able to compare results at regular intervals, using a `majority' voting process allows any failing nodes to be identified. However, if the voting is done through a central unit, failures in that unit will fail the whole system. This can be solved using a distributed analog voting mechanism whereby each unit generates an analog signal (e.g. a voltage) which is applied to one or more common carriers. The resultant voltage indicates result. Introducing heterogenous systems can introduce extra communication difficulties based on the systems' architecture (e.g. using big endian vs. little endian). Fault tolerance is also more difficult, as processor speeds will likely vary, development costs are much higher, and truly independent development is difficult to achieve.
+    	\paragraph{Loosely coupled} Distributed networks with no shared memory, with nodes (processors) communicating over a Local Area Network. This makes coordination more difficult (as there's no shared memory), but also means that fault tolerance is possible by introducing duplicate nodes. An issue which is introduced with loosely-coupled systems is that of whether to use homogenous (with identical processors) or heterogenous (different processors) systems. Homogenous processors are able to compare results at regular intervals, using a `majority' voting process allows any failing nodes to be identified. However, if the voting is done through a central unit, failures in that unit will fail the whole system. This can be solved using a distributed analog voting mechanism whereby each unit generates an analog signal (e.g. a voltage) which is applied to one or more common carriers. The resultant voltage indicates result. Introducing heterogenous systems can introduce extra communication difficulties based on the systems' architecture (e.g. using big endian vs. little endian). Fault tolerance is also more difficult, as processor speeds will likely vary, development costs are much higher, and truly independent development is difficult to achieve.
     	
     	\paragraph{Example Use-case: The (Now Defunct) Space Shuttle} 
     	Uses four main processors in a homogenous system, and uses majority voting. If one processor fails, it leaves three others while it is being replaced, the remaining three can continue majority voting. Also has one heterogenous backup processor which is used in emergencies when two of the four main processors have failed (kept as a warm standby, monitoring the main processors to keep up to date).
     	
    	\subsection{Problems}
    	
-   	Loosely coupled systems have most issues with reliability. One reason being that there's no common timebase; each processor's view of the system may be inconsistent. This can be solved by delaying message passing.\\
+   	Distributed systems introduce a number of issues which must be addressed in order to work successfully.  One of these issues is global state; for a distributed system to work effectively, there must be shared memory or global state. There also needs to be some common timebase so that the order in which events occur can be determined. Among other things, this is required in order to `snapshot' the complete system in its current state.
+   	
+	Another big problem with distributed systems is that they are nondeterministic (i.e. the outcome can be unpredictable due to timing issues). There are two types of nondeterminism: angelic (an ‘angel’/external agent ensures that the best choice is always made), and demonic (no assumption can be made about the choice the ‘demon’ will make). Angelic determinism is generally impossible to achieve, were it possible, any NP-complete problem could be solved in polynomial time by always selecting the ‘correct’ path to follow. The alternative is to add mechanisms to make things deterministic.   
+   	
+   		\paragraph{Issues to be addressed:}
+		\begin{itemize}
+			\item Ensuring a consistent timebase so that all processors can tell what order events occur in.
+			\item Ensuring shared resources are not accessed by multiple processors at the same time (distributed mutual exclusion).
+			\item Need to be able to recognise situations where one processor deadlocks another (distributed deadlock detection).
+		\end{itemize}
    	
    	\textbf{Failure modes}: transient, permanent, intermittent; fail safe (known state), fail soft (‘graceful degradation’); fail uncontrolled, fail late (correct values but too late), fail silent (no values), fail stop (no values, failure visible to other nodes)
    	\emph{Uncontrolled intermittent failures are the hardest to deal with, as parts of the system will act `traitorously'}
 
-\paragraph{Issues to be addressed:}
-\begin{itemize}
-	\item Ensuring a consistent timebase so that all processors can tell what order events occur in.
-	\item Ensuring shared resources are not accessed by multiple processors at the same time (distributed mutual exclusion).
-	\item Need to be able to recognise situations where one processor deadlocks another (distributed deadlock detection).
-
-\end{itemize}
+		\subsection{Global Time}
    	
-The basic problem is that distributed systems are nondeterministic (i.e. the outcome can be unpredictable due to timing issues). There are two types of nondeterminism: angelic (an ‘angel’/external agent ensures that the best choice is always made), and demonic (no assumption can be made about the choice the ‘demon’ will make). Angelic determinism is generally impossible to achieve, were it possible, any NP-complete problem could be solved in polynomial time by always selecting the ‘correct’ path to follow. The alternative is to add mechanisms to make things deterministic.   	
- 		\subsection{Global state}
+   		Due to unavoidable communication delays, it is impossible to determine absolute time on any node. In most cases, it is sufficient to simply have a correct list of the order in which events occur within the system (generally absolute time doesn't matter). This sequence can be used to number events and provide a non-absolute timestamp. As an example, determining if event A happened before event if A and B originate from the same node and timestamp A < timestamp B then yes, also yes if A is a message being sent and B is that message being received, yes if timestamp A < timestamp C and timestamp C < timestamp B. Otherwise, we don’t know. Upon receipt of a message, the local timestamp is incremented to be higher than that of the incoming message (this technique only suitable for two nodes). 
+   
+   	With networks of more than two nodes, `vector clocks' can be used. With vector clocks, each node maintains a vector of timestamps, one for each node. Along with each message, a complete vector is also sent. The receiver of the message updates their own vector so that each timestamp is greater than the one in the message
+      	
     	\subsection{Network issues}
+    	With regards to network issues, we must assume that the communications network is reliable (i.e. any messages sent will eventually be received). This can be done by requiring acknowledgements of all messages (if no acknowledgement of a message is received, the message is sent again). If errors occur (e.g. the message may get lost so the message is sent again, or the reply may get lost so a duplicate message is received). To deal with this, messages are given a unique `sequence' number to uniquely identify it. This can be used to discard any duplicate messages and keep messages in sequence.
+    	
     	\subsection{Mutual exclusion}
+    	Mutual exclusion is needed to ensure that shared resources are not accessed by multiple nodes simultaneously. Each node is required to keep a queue of pending requests, with the resource being locked in timestamp order. Every request needs to be sent to every other node so that every node’s queue is the same. A node will be able to lock a resource if it's request is first in the queue, and a message has been received from all other nodes with a timestamp greater than the request. This second condition guarantees that no earlier request will still be on its way.
+    	
     	\subsection{Deadlock}
-  	\subsection{How is it implemented}
-    	\subsection{Java}
-      		\subsubsection{RMI}
-      		\subsubsection{CORBA}
+    	There may be an inconsistent view of the system due to a lack of global time. For example, node A may report it has resource X and is waiting for Y, while node B may report it has resource Y and is waiting for X (these may not relate to the state of the system at the same time). This could be solved using a centralised algorithm (deadlock detector), with messages to the detector consisting of two parts: a table of threads waiting for node’s resources, and a table of resources waited for by node’s threads. These messages can be compared to check consistency. Each message essentially acting as a snapshot of the current system's threads/resources a a particular moment (like version control). Another approach could be to use a decentralised algorithm to create a trade dependancy chain: thread A requests X, but X is held by B. B is waiting for Y, but Y is held by C, C is waiting for etc. etc. 
+    	
+    	\subsection{Fault Tolerance}
+    	Even with these measures in place, faults can (and do) occur in these circumstances, it's importance to have some error detection/recovery in place. Communication between nodes can fail (i.e no more messages are received, or messages can be garbled). A checksum can be used in these circumstances to verify that the received message is in fact the same as that sent. The nodes themselves can also fail (generating faulty/incorrect messages), to detect this, each node can be compared agains the others.	
+  	\subsection{Distributed Processing}
+  	Distributed processing allows processing to be carried out on a remote server. Two varieties considered here:
+  	
+	  	\subsubsection{Remote Procedure Calls}
+		RPC is an inter-process communication that allows a computer program to cause a subroutine or procedure to execute in another address space (commonly on another computer on a shared network) without the programmer explicitly coding the details for this remote interaction. That is, the programmer writes essentially the same code whether the subroutine is local to the executing program, or remote.\\
+		
+		\noindent \textbf{The RPC Procedure:}
+		\begin{enumerate}
+			\item The client calls the client stub. The call is a local procedure call, with parameters pushed on to the stack in the normal way.
+			\item The client stub packs the parameters into a message and makes a system call to send the message. Packing the parameters is called marshalling.
+			\item The client's local operating system sends the message from the client machine to the server machine.
+			\item The local operating system on the server machine passes the incoming packets to the server stub.
+			\item The server stub calls the server procedure. The reply traces the same steps in the reverse direction (server `unmarshalls' parameters and calls the corresponding procedure).
+			\item The server returns the results in a message to the client.
+		\end{enumerate}
+		
+		\noindent \textbf{Data Representation Issues Associated With RPC:}
+		\begin{itemize}
+			\item Different formats on different machines			\item Pointers lose their meaning if sent to a remote machine
+		\end{itemize}
+		
+		\emph{To overcome this, the platform-independent External Data Representation (XDR)can be used for common data types. Another solution is to linearise linked data structures.}
+  	
+  		\subsubsection{Remote Method Invocation}
+  		RMI is a Java-specific implementation of RPC. There aren't any issues with data representation: any `serializable' Java objects can be sent. Although Java uses references (pointers) to refer to objects, serialization linearises embedded references automatically. The client accesses `registry server' to get a remote object that implements a desired interface. The client can call methods of this object as it it were a local object.\\
+  		
+  		\noindent To implement, simple extend \emph{Remote}, and add \emph{RemoteException} handling.
+  		
+\begin{lstlisting}[label=some-code,caption=Parallel code in haskell] 
+/**
+ * The interface
+ */
+import java.rmi.*;import java.rmi.server.*;   
+public class Adder extends UnicastRemoteObject implements Adding 
+{    public Adder () throws RemoteException { }    		
+  	public int add (int a, int b) throws RemoteException	{ return a + b; }}
+  			
+/**
+ * The server class
+ */
+import java.rmi.*; 
+  		
+public class AddServer 
+{	public static void main (String args[]) throws Exception 
+	{		Naming.rebind ("Adder", new Adder()); 
+	}}
+
+/**
+ * The client class
+ */	
+import java.rmi.*;
+
+public class AddClient 
+{    public static void main (String args[]) throws Exception 
+	{      	Adding adder = (Adding)Naming.lookup("//192.168.11.3/Adder");		System.out.println(adder.add(123,456));	}}
+\end{lstlisting}
+  	
+    	\subsection{Distributed Object Frameworks}
+    	There are a number of higher-level mechanisms for distributing objects in an object-oriented system. Below are some examples.
+    	
+      		\subsubsection{Common Object Request Broker Architecture}
+      		 Defined by a consortium including IBM, Apple and Sun, CORBA is designed for use on heterogenous systems. It's similar to RPC, may be different hardware, different languages. CORBA uses an Interface Definition Language (IDL) to define objects in a platform-independent way. ORB (Object Request Broker) is used to handle communication with remote objects (lookup service returns references to remote objects, a client-side stub/`proxy' marshals parameters etc. Interface repository allows objects to be located by the interfaces they implement
+      		
       		\subsubsection{Jini}
-      		
-      		
+      		A Java-specific framework that uses RMI to build ‘federations of services’. A lookup service locates objects implementing a particular interface. It returns a ‘proxy object’ to communicate with the real object, the proxy can perform a mixture of client-side and server-side processing. Access to Jini services is based on leases (a lease entitles you to use the service for a particular period of time). You can be given exclusive access to the service, or non-exclusive access to allow the same resource to be shared concurrently with others.
+      	 
+      	 	\paragraph{Proxies}
+      	 	Jini uses two styles of proxy: a thin proxy, where everything is passed to the remote object, and a fat proxy where some local processing is performed before passing the request to the remote object. The proxy can validate parameter values before passing them to the remote object, which means more responsiveness at the client end (no waiting for a remote server to tell you that a value is out of range). It also means less loading at the service end (no need to validate parameters sent by the client).\\
+      	 	
+      	 	A service can register itself by using the Jini discovery protocol to locate a lookup service, and then use the join protocol to upload a proxy object to the lookup service. If a lookup service is already known then a direct TCP connection can be established, otherwise a multicast UDP request is used to find one.
+      	 	  		
 \chapter{Networking}
 
 	\section{Internet fundamentals}
@@ -379,7 +454,7 @@ The basic problem is that distributed systems are nondeterministic (i.e. the out
   
   	
   	\section{Embedded systems}
-  	Real time systems are often computer systems which are part of (embedded in) a larger system– e.g. process control, autopilot, manufacturing• ‘Embedded’ often used as a synonym for real time
+  	Real time systems are often computer systems which are part of (embedded in) a larger system (e.g. process control, autopilot, manufacturing). ‘Embedded’ often used as a synonym for real time.
   	
   	\section{Characteristics}
   	
