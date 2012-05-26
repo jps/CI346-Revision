@@ -135,6 +135,60 @@ There are many different paradigms in computer programming here are some example
 
 \section{A comparison between Java, Ada, Haskell and Prolog}
 
+
+	\subsection{Typing Systems}
+
+		\subsubsection{Static}
+
+		A programming language is said to use static typing when type checking is performed during compile-time as opposed to run-time. Statically typed languages include ActionScript 3, Ada, C, D, Eiffel, F\#, Fortran, Go, Haskell, haXe, JADE, Java, 	 		ML, Objective-C, OCaml, Pascal, and Scala. C++ is statically typed, aside from its run-time type information system. The C\# type system performs static-like compile-time type checking, but also includes full runtime type checking. 
+
+		Static typing is a limited form of program verification (see type safety): accordingly, it allows many type errors to be caught early in the development cycle. Static type checkers evaluate only the type information that can be determined at  				compile time, but are able to verify that the checked conditions hold for all possible executions of the program, which eliminates the need to repeat type checks every time the program is executed. Program execution may also be made more  			efficient (e.g. faster or taking reduced memory) by omitting runtime type checks and enabling other optimizations.
+
+
+		\subsubsection{Dynamic}
+		
+		A programming language is said to be dynamically typed when the majority of its type checking is performed at run-time as opposed to at compile-time. In dynamic typing values have types, but variables do not; that is, a variable can refer to a 			value of any type. Dynamically typed languages include APL, Erlang, Groovy, JavaScript, Lisp, Lua, MATLAB, GNU Octave, , PHP, Prolog, Python, Ruby, Smalltalk and Tcl.
+
+ 	 	Implementations of dynamically-typed languages generally associate run-time objects with "tags" containing their type information. This run-time classification is then used to implement type checks and dispatch overloaded functions, but can also enable pervasive uses of dynamic dispatch, late binding and similar idioms that would be cumbersome at best in a statically-typed language, requiring the use of variant types or similar features.
+
+ 		More broadly, as explained below, dynamic typing can improve support for dynamic programming language features, such as generating types and functionality based on run-time data. (Nevertheless, dynamically typed languages need not support any or all such features, and some dynamic programming languages are statically typed.) On the other hand, dynamic typing provides fewer a priori guarantees: a dynamically typed language accepts and attempts to execute some programs that would be ruled as invalid by a static type checker, either due to errors in the program or due to static type checking being too conservative.
+
+ 		 Dynamic typing may result in runtime type errors—that is, at runtime, a value may have an unexpected type, and an operation nonsensical for that type is applied. Such errors may occur long after the place where the programming mistake was    		made—that is, the place where the wrong type of data passed into a place it should not have. This may make the bug difficult to locate.
+
+ 		Dynamically typed language systems' run-time checks can potentially be more sophisticated than those of statically typed languages, as they can use dynamic information as well as any information from the source code. On the other hand,  			runtime checks only assert that conditions hold in a particular execution of the program, and the checks are repeated for every execution of the program.
+
+		Development in dynamically typed languages is often supported by programming practices such as unit testing. Testing is a key practice in professional software development, and is particularly important in dynamically typed languages. In  				practice, the testing done to ensure correct program operation can detect a much wider range of errors than static type-checking, but full test coverage over all possible executions of a program (including timing, user inputs, etc.), if even   				possible, would be extremely costly and impractical. Static typing helps by providing strong guarantees of a particular subset of commonly-made errors never occurring
+
+
+		\subsubsection{Strong Vs Strong}
+			
+		Most generally, "strong typing" implies that the programming language places severe restrictions on the intermixing that is permitted to occur, preventing the compiling or running of source code which uses data in what is considered to be an invalid way. For instance, an addition operation may not be used with an integer and string values; a procedure which operates upon linked lists may not be used upon numbers. However, the nature and strength of these restrictions is highly variable.
+
+\textbf{Weak Typing}
+
+\begin{lstlisting}
+a = 2
+b = "2"
+ 
+concatenate(a, b) # Returns "22"
+add(a, b)         # Returns 4
+\end{lstlisting}
+
+\textbf{Strong Typing}
+\begin{lstlisting}
+a = 2
+b = "2"
+ 
+concatenate(a, b)     # Type Error
+add(a, b)             # Type Error
+concatenate(str(a), b) # Returns "22"
+add(a, int(b))         # Returns 4
+\end{lstlisting}
+
+
+
+
+
 	\subsection{Java}
 
 
@@ -149,11 +203,16 @@ There are many different paradigms in computer programming here are some example
 
 	Haskell is a functional, lazy/non-strict, modular language.
 
-	Here are some key features of Haskell
+	Haskell features lazy evaluation, pattern matching, list comprehension, typeclasses, and type polymorphism. It is a purely functional language, which means that in general, functions in Haskell do not have side effects. There is a distinct type for 	 		representing side effects, orthogonal to the type of functions. A pure function may return a side effect which is subsequently executed, modeling the impure functions of other languages.
+
+	Haskell has a strong, static type system based on Hindley–Milner type inference. Haskell's principal innovation in this area is to add type classes, which were originally conceived as a principled way to add overloading to the language, but have 		 	since found many more uses.
+
+	The type which represents side effects is an example of a monad. Monads are a general framework which can model different kinds of computation, including error handling, nondeterminism, parsing, and software transactional memory. Monads are  		defined as ordinary datatypes, but Haskell provides some syntactic sugar for their use.
+	
 
 	\begin{itemize}
 	\item Recursion over iteration, Haskell does not have loops and because of this it uses recursion iterate through lists. Haskell makes use of tail cull recursion which allows the program to recurse indefinitely with out causing a stack overflow that would occur in traditional imperial and object orientated languages.
-	\item Sparks, Haskell Threads and Worker threads. Haskell deals with concurrency in a unique was. when a task is to be performed it turned into a spark. A Spark is a essentially a task that is added to a task queue.  There sparks are then ignited by Haskell's threads which are then actioned by a worked thread. This way of delegating tasks offerers very efficient multi core performance which very minimal over head in code due to the fact the complex delegation of how to perform tasks is calculated automatically.
+	\item Sparks, Haskell Threads and Worker threads. Haskell deals with concurrency in a unique way. when a task is to be performed it turned into a spark. A Spark is a essentially a task that is added to a task queue.  There sparks are then ignited by Haskell's threads which are then actioned by a worked thread. This way of delegating tasks offerers very efficient multi core performance which very minimal over head in code due to the fact the complex delegation of how to perform tasks is calculated automatically.
 
 	\end{itemize}
 	
