@@ -634,14 +634,26 @@ public class AddClient
   	
   	\begin{itemize}
   		\item Needs to cope with a variety of external events (where software is becoming frequently large and complex)		\item Reliable and safe: able to detect and recover from failures		\item Need to interact with external hardware
-  		\item Need to be able to specify timing requirements (when to perform actions, when to complete actions by, what to do when deadlines are missed, importance of granularity (e.g. IBM PC clock granularity is 55ms = 100yds at 600mph)
+  		\item Need to be able to specify timing requirements (when to perform actions, when to complete actions by, what to do when deadlines are missed, importance of granularity (e.g. IBM PC clock granularity is 55ms, which can mean 100yds at 600mph)
   		\item Event-driven rather than process-driven (external events must be dealt with as they occur; event ordering is not generally predictable)		\item Generally uses concurrent processes (each event source can be handled by a separate process)  
   		\item Must have predictable response times (factors to consider: caching/pipelining affect program speed, worst case is an order of magnitude slower than the average, fast programs \& external time)
   		\item Code must be safe (i.e. nothing `bad' will happen) and live (i.e. something `good' will eventually happen). `Eventually' must be able to be upper-bounded, as livelock can particularly be an issue in real-time systems.
   	\end{itemize}
   	
 \chapter{Security}
-  	\section{Password protection}
+
+	Computers have become an indispensable part of modern life, and failures can have serious consequences. In addition to the obvious loss/corruption of information which can occur, system failures can also lead to financial loss and serious injury or even a loss of life (in the case of failure of an aircraft's autopilot for example).
+	
+	Security issues can arise for various reasons, from basic hardware failures, programmatic errors, or even as a result of attacks by malicious parties. To prevent these sorts of failures, the hardware should provide at least a basic level of security (for example memory protection). These mechanisms should be utilised effectively by the OS.
+	
+	\section{Password Protection} 
+	
+	One of the most basic forms of security, passwords are used to verify users, and grant access to restricted resources. Only the individual user should have knowledge of the password (system admins should be able to change it if necessary, but not access it). Obviously the sysadmin's password is most important of all, as it allows unrestricted access to the system. It also requires special security measures, as a loss of the password could cause admins to be locked out of the system. Measures include storing a copy of the password in a safe location, or breaking the password into chunks, and distributing it so that no one person can reconstruct it. 
+	
+	For security reasons, a system should not show a password when typed in by the user (even displaying passwords as a series of asterisks reveals their length). Additionally, passwords should be encrypted by the system. A one-way encryption method could be used, as the entered password would only need to be compared to a stored copy of the encrypted password. An example of a one-way encryption algorithm is the \emph{Message Digest Version 5} (MD5). With MD5, the text is converted into a 16 byte value (a hash which is unique representation of the password in the majority of cases - the SHA256 checksum provides even greater reliability).
+	
+	\emph{Other forms of authentication include physical authentication (swipe cards, keys etc.), biometric data (fingerprints, iris patterns, face recognition etc.), and individual biometric actions (such as the timing of keystrokes when typing a password to recognise a user's behaviour)}
+
 	\section{Encryption}
     	\subsection{Public-key}
     	\subsection{Steganography}
