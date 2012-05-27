@@ -59,8 +59,10 @@ breaklines=true}
 % chapter header
 \renewcommand{\@makechapterhead}[1]
 {\vspace*{50\p@}{
-	\parindent \z@ \raggedright \normalfont	%\huge \bfseries \thechapter. #1
-	\huge \bfseries #1	\vspace{20pt}}}
+	\parindent \z@ \raggedright \normalfont
+	%\huge \bfseries \thechapter. #1
+	\huge \bfseries #1
+	\vspace{20pt}}}
 
 \setcounter{secnumdepth}{-1} 
 \onehalfspace
@@ -131,10 +133,7 @@ There are many different paradigms in computer programming here are some example
 \end{description}
 
 
-\section{A comparison between Java, Ada, Haskell and Prolog}
-
-
-	\subsection{Typing Systems}
+	\section{Typing Systems}
 
 		\subsubsection{Static}
 
@@ -180,6 +179,10 @@ concatenate(str(a), b) # Returns "22"
 add(a, int(b))         # Returns 4
 \end{lstlisting}
 
+
+\section{A comparison between Java, Ada, Haskell and Prolog}
+
+
 	\subsection{Java}
 	
 	Java is a static, Object Orientated , structured, imperative, generic, reflective generic reflective language. 
@@ -190,14 +193,97 @@ add(a, int(b))         # Returns 4
 	\begin{itemize}
 	\item Multi threading
 	\item Networking Libraries
-	\
+	\item Platform Independent GUI (SWING)
+	\item Large standardized class library
 	\end{itemize}
 	
 
 	\subsection{Ada}
 
+	Ada is a Multi-paradigm structured, statically typed, imperative, wide-spectrum, and object-oriented high-level computer programming language, extended from Pascal and other languages. It has strong built-in language support for explicit concurrency, offering tasks, synchronous message passing (via guarded task entries), protected objects (a monitor-like construct with additional guards as in conditional critical regions), and nondeterminism (via select statements).
+
+	Ada was originally designed by a team led by Jean Ichbiah of CII Honeywell Bull under contract to the United States Department of Defense (DoD) from 1977 to 1983 to supersede the hundreds of programming languages then used by the DoD. Ada is strongly typed and compilers are validated for reliability in mission-critical applications, such as avionics software.
+
+
+Ada's type system is not based on a set of predefined primitive types but allows users to declare their own types. This declaration in turn is not based on the internal representation of the type but on describing the goal which should be achieved. This allows the compiler to determine a suitable memory size for the type, and to check for violations of the type definition at compile time and run time (i.e. range violations, buffer overruns, type consistency, etc.). Ada supports numerical types defined by a range, modulo types, aggregate types (records and arrays), and enumeration types. Access types define a reference to an instance of a specified type; untyped pointers are not permitted. Special types provided by the language are task types and protected types.
+
+
+	\begin{lstlisting}[label=Date Type,caption=Ada Date Type] 
+
+type Day_type   is range    1 ..   31;
+type Month_type is range    1 ..   12;
+type Year_type  is range 1800 .. 2100;
+type Hours is mod 24;
+type Weekday is (Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday); 
+ 
+type Date is
+   record
+     Day   : Day_type;
+     Month : Month_type;
+     Year  : Year_type;
+   end record;
+
+
+	\end{lstlisting}
+
+
+
+	Ada programs consist of packages, procedures and functions.
+
+	Packages, procedures and functions can nest to any depth and each can also be the logical outermost block.
+
+	Each package, procedure or function can have its own declarations of constants, types, variables, and other procedures, functions and packages, which can be declared in any order.
+
+	\begin{lstlisting}[label=Ada Package Specification,caption=Ada Package Specification] 
+package Example is
+     type Number is range 1 .. 11;
+     procedure Print_and_Increment (j: in out Number);
+end Example;
+	\end{lstlisting}
+
+
+\begin{lstlisting}[label=Ada Package Implementation,caption=Ada Package Implementation] 
+with Ada.Text_IO; 
+package body Example is
+
+i : Number := Number'First;
+
+procedure Print_and_Increment (j: in out Number) is
+
+function Next (k: in Number) return Number is
+begin
+return k + 1;
+end Next;
+
+begin
+Ada.Text_IO.Put_Line ('The total is: ' & Number'Image(j));
+j := Next (j);
+end Print_and_Increment;
+
+begin
+while i < Number'Last loop
+Print_and_Increment (i);
+end loop;
+end Example;
+\end{lstlisting}
 
 	\subsection{C++}
+
+	C++ is a statically typed, free-form, multi-paradigm, compiled, general-purpose, powerful programming language. It is regarded as an intermediate-level language, as it comprises a combination of both high-level and low-level language features. It was developed by Bjarne Stroustrup starting in 1979 at Bell Labs object oriented features such as classes to the C programming language. Originally named C with Classes, the language was renamed C++ in 1983, as a pun involving the increment operator.
+
+ 	C++ is one of the most popular programming languages implemented on a wide variety of hardware and operating system platforms. As an efficient compiler to native code, its application domains including systems software, application software, device drivers, embedded software, high-performance server and client applications, and entertainment software such as video games. Several groups provide both free and proprietary C++ compiler software, including the GNU Project, Microsoft, Intel and Embarcadero Technologies. Java and C\# which have become popular alternatives evolved from C++, but make extensive use of automatic garbage collection and compiling to an intermediate machine-independent intermediate code.
+	
+
+	\begin{itemize}
+	\item Operator Overloading
+	\item Templates/ Generic programming
+	\item Encapsulation (Hiding information dependent on scope, private, public etc.)
+	\item Inheritance
+	\item Standardized class libraries (Stabdard Template Libary (STL), Core Library)
+	\item Pointer arithmetic and manipulation 
+	\item Multithreading possible however this often requires an external library such as OpenMP or Boost C++
+	\end{itemize}
+
 
 
 	\subsection{Haskell}
@@ -254,12 +340,19 @@ add(a, int(b))         # Returns 4
     	\subsection{Ada}
     	
       		\subsubsection{Tasks}
-      		Tasks are Ada's equivalent of Java's threads; each separate task representing a separate `thread' of execution. Tasks can communicate with each other via `entry' calls. Entry points are declared in the task spec– a task declares ‘entries’ (like procedures) in the task spec in the form of ‘accept’ statements. An entry call causes a ‘rendezvous’ between the called task and its caller. The caller waits for the task to accept the call – the accept statement waits for a call (see Listing).         
+      		Tasks are Ada's equivalent of Java's threads; each separate task representing a separate `thread' of execution. Tasks can communicate with each other via `entry' calls. Entry points are declared in the task spec
+– a task declares ‘entries’ (like procedures) in the task spec in the form of ‘accept’ statements. An entry call causes a ‘rendezvous’ between the called task and its caller. The caller waits for the task to accept the call – the accept statement waits for a call (see Listing).
+         
 \begin{lstlisting}[label=some-code,caption=Ada's Accept Statement] 
 loop 
 	select
-		accept Show (Message : in String) do			Put_Line(Message);		end Show; or		accept Stop;        exit;
-	end select;end loop;
+		accept Show (Message : in String) do
+			Put_Line(Message);
+		end Show; or
+		accept Stop;
+        exit;
+	end select;
+end loop;
 \end{lstlisting}
       		
       		Entries require a client/server relationship, as they only communicate between one task and another. This is inefficient when just accessing shared data (tasks must be rescheduled to actually pass the data).
@@ -387,7 +480,8 @@ fib n = fib (n -1) + fib (n -2)
 \textbf{Solving the problem:} Deadlock can be avoided by providing one extra chopstick or one fewer chair, having one left-handed philosopher, allowing philosophers to snatch chopsticks from each other, philosophers put chopstick down if the other isn’t available, or allowing chopsticks to be shared.   
     	 
  	 	Livelock only requires circular waiting for unshareable resources, so can be avoided by picking up left chopstick and put it down again if chopstick not available, or snatching chopstick from neighbours.
-    	 Another solution could be to provide a bottle of soy sauce, whereby philosophers can only pick up chopsticks if they have the bottle, sauce is put down sauce after both chopsticks are collected. The bottle ensures mutual exclusion for the critical act of picking up a chopstick.
+    	 
+Another solution could be to provide a bottle of soy sauce, whereby philosophers can only pick up chopsticks if they have the bottle, sauce is put down sauce after both chopsticks are collected. The bottle ensures mutual exclusion for the critical act of picking up a chopstick.
     	
 \chapter{Distributed Systems}
 
@@ -539,12 +633,16 @@ public class AddClient
     	\subsection{Ethernet}
     	Ethernet is a broadcast medium which has become the standard for local area networks. Ethernet stations communicate by sending each other data packets (individual blocks of data). Each Ethernet station is given a 48-bit MAC address to identify it on the network. With ethernet, every frame sent is received by every system connected to the Ethernet (including the transmitter).\\
     	
-\noindent\textbf{Frame format:}preamble - alternating 0s and 1s for synchronisation (8 octets), destination (6 octets), source (6 octets), frame type (2 octets), data (64-1500 octets), CRC (4 octets)
+\noindent\textbf{Frame format:}
+preamble - alternating 0s and 1s for synchronisation (8 octets), destination (6 octets), source (6 octets), frame type (2 octets), data (64-1500 octets), CRC (4 octets)
     	    	
 \ \\ \textbf{Carrier Sense Multiple Access with Collision Detection (CSMA/CD):} Used to regulate access: A node waiting to transmits monitors the carrier signal waiting for the line to become idle, at which point it starts transmitting. If another node starts transmitting at the same time, the frame is garbled (detectable by the senders). When a collision is detected, each transmitting node ‘backs off’ for a random period. This randomness reduces chance of another collision (in the case of further collisions, the maximum period for back-off is doubled - exponential). As the network load increases, collisions become more frequent, causing more nodes to back off. This causes the network to slow down, but should not fail completely.
     	
     	\subsection{Internet Addresses}
-    	Addresses are IPv4 (or 32-bit), consisting of 4 octets expressed as n.n.n.n (e.g. 127.0.0.1). The next-gen IPv6 (128-bit) consists of 6 octets (giving $\sim$1038 unique addresses).• Address divided into network and machine number:– subnet mask specifies how it is divided
+    	Addresses are IPv4 (or 32-bit), consisting of 4 octets expressed as n.n.n.n (e.g. 127.0.0.1). The next-gen IPv6 (128-bit) consists of 6 octets (giving $\sim$1038 unique addresses).
+
+• Address divided into network and machine number:
+– subnet mask specifies how it is divided
     	
     	\subsection{ICMP}
 	Internet Control Message Protocol (ICMP) is one of the core protocols of the Internet Protocol Suite. It is chiefly used by the operating systems of networked computers to send error messages indicating, for example, that a requested service is not available or that a host or router could not be reached. ICMP can also be used to relay query messages. It is assigned protocol number 1. ICMP differs from transport protocols such as TCP and UDP in that it is not typically used to exchange data between systems, nor is it regularly employed by end-user network applications (with the exception of some diagnostic tools like ping and traceroute).
@@ -633,9 +731,12 @@ public class AddClient
   	\section{Characteristics}
   	
   	\begin{itemize}
-  		\item Needs to cope with a variety of external events (where software is becoming frequently large and complex)		\item Reliable and safe: able to detect and recover from failures		\item Need to interact with external hardware
+  		\item Needs to cope with a variety of external events (where software is becoming frequently large and complex)
+		\item Reliable and safe: able to detect and recover from failures
+		\item Need to interact with external hardware
   		\item Need to be able to specify timing requirements (when to perform actions, when to complete actions by, what to do when deadlines are missed, importance of granularity (e.g. IBM PC clock granularity is 55ms = 100yds at 600mph)
-  		\item Event-driven rather than process-driven (external events must be dealt with as they occur; event ordering is not generally predictable)		\item Generally uses concurrent processes (each event source can be handled by a separate process)  
+  		\item Event-driven rather than process-driven (external events must be dealt with as they occur; event ordering is not generally predictable)
+		\item Generally uses concurrent processes (each event source can be handled by a separate process)  
   		\item Must have predictable response times (factors to consider: caching/pipelining affect program speed, worst case is an order of magnitude slower than the average, fast programs \& external time)
   		\item Code must be safe (i.e. nothing `bad' will happen) and live (i.e. something `good' will eventually happen). `Eventually' must be able to be upper-bounded, as livelock can particularly be an issue in real-time systems.
   	\end{itemize}
