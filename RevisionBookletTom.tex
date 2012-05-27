@@ -59,8 +59,10 @@ breaklines=true}
 % chapter header
 \renewcommand{\@makechapterhead}[1]
 {\vspace*{50\p@}{
-	\parindent \z@ \raggedright \normalfont	%\huge \bfseries \thechapter. #1
-	\huge \bfseries #1	\vspace{20pt}}}
+	\parindent \z@ \raggedright \normalfont
+	%\huge \bfseries \thechapter. #1
+	\huge \bfseries #1
+	\vspace{20pt}}}
 
 \setcounter{secnumdepth}{-1} 
 \onehalfspace
@@ -338,12 +340,19 @@ end Example;
     	\subsection{Ada}
     	
       		\subsubsection{Tasks}
-      		Tasks are Ada's equivalent of Java's threads; each separate task representing a separate `thread' of execution. Tasks can communicate with each other via `entry' calls. Entry points are declared in the task spec– a task declares ‘entries’ (like procedures) in the task spec in the form of ‘accept’ statements. An entry call causes a ‘rendezvous’ between the called task and its caller. The caller waits for the task to accept the call – the accept statement waits for a call (see Listing).         
+      		Tasks are Ada's equivalent of Java's threads; each separate task representing a separate `thread' of execution. Tasks can communicate with each other via `entry' calls. Entry points are declared in the task spec
+– a task declares ‘entries’ (like procedures) in the task spec in the form of ‘accept’ statements. An entry call causes a ‘rendezvous’ between the called task and its caller. The caller waits for the task to accept the call – the accept statement waits for a call (see Listing).
+         
 \begin{lstlisting}[label=some-code,caption=Ada's Accept Statement] 
 loop 
 	select
-		accept Show (Message : in String) do			Put_Line(Message);		end Show; or		accept Stop;        exit;
-	end select;end loop;
+		accept Show (Message : in String) do
+			Put_Line(Message);
+		end Show; or
+		accept Stop;
+        exit;
+	end select;
+end loop;
 \end{lstlisting}
       		
       		Entries require a client/server relationship, as they only communicate between one task and another. This is inefficient when just accessing shared data (tasks must be rescheduled to actually pass the data).
@@ -471,7 +480,8 @@ fib n = fib (n -1) + fib (n -2)
 \textbf{Solving the problem:} Deadlock can be avoided by providing one extra chopstick or one fewer chair, having one left-handed philosopher, allowing philosophers to snatch chopsticks from each other, philosophers put chopstick down if the other isn’t available, or allowing chopsticks to be shared.   
     	 
  	 	Livelock only requires circular waiting for unshareable resources, so can be avoided by picking up left chopstick and put it down again if chopstick not available, or snatching chopstick from neighbours.
-    	 Another solution could be to provide a bottle of soy sauce, whereby philosophers can only pick up chopsticks if they have the bottle, sauce is put down sauce after both chopsticks are collected. The bottle ensures mutual exclusion for the critical act of picking up a chopstick.
+    	 
+Another solution could be to provide a bottle of soy sauce, whereby philosophers can only pick up chopsticks if they have the bottle, sauce is put down sauce after both chopsticks are collected. The bottle ensures mutual exclusion for the critical act of picking up a chopstick.
     	
 \chapter{Distributed Systems}
 
@@ -623,12 +633,16 @@ public class AddClient
     	\subsection{Ethernet}
     	Ethernet is a broadcast medium which has become the standard for local area networks. Ethernet stations communicate by sending each other data packets (individual blocks of data). Each Ethernet station is given a 48-bit MAC address to identify it on the network. With ethernet, every frame sent is received by every system connected to the Ethernet (including the transmitter).\\
     	
-\noindent\textbf{Frame format:}preamble - alternating 0s and 1s for synchronisation (8 octets), destination (6 octets), source (6 octets), frame type (2 octets), data (64-1500 octets), CRC (4 octets)
+\noindent\textbf{Frame format:}
+preamble - alternating 0s and 1s for synchronisation (8 octets), destination (6 octets), source (6 octets), frame type (2 octets), data (64-1500 octets), CRC (4 octets)
     	    	
 \ \\ \textbf{Carrier Sense Multiple Access with Collision Detection (CSMA/CD):} Used to regulate access: A node waiting to transmits monitors the carrier signal waiting for the line to become idle, at which point it starts transmitting. If another node starts transmitting at the same time, the frame is garbled (detectable by the senders). When a collision is detected, each transmitting node ‘backs off’ for a random period. This randomness reduces chance of another collision (in the case of further collisions, the maximum period for back-off is doubled - exponential). As the network load increases, collisions become more frequent, causing more nodes to back off. This causes the network to slow down, but should not fail completely.
     	
     	\subsection{Internet Addresses}
-    	Addresses are IPv4 (or 32-bit), consisting of 4 octets expressed as n.n.n.n (e.g. 127.0.0.1). The next-gen IPv6 (128-bit) consists of 6 octets (giving $\sim$1038 unique addresses).• Address divided into network and machine number:– subnet mask specifies how it is divided
+    	Addresses are IPv4 (or 32-bit), consisting of 4 octets expressed as n.n.n.n (e.g. 127.0.0.1). The next-gen IPv6 (128-bit) consists of 6 octets (giving $\sim$1038 unique addresses).
+
+• Address divided into network and machine number:
+– subnet mask specifies how it is divided
     	
     	\subsection{ICMP}
 	Internet Control Message Protocol (ICMP) is one of the core protocols of the Internet Protocol Suite. It is chiefly used by the operating systems of networked computers to send error messages indicating, for example, that a requested service is not available or that a host or router could not be reached. ICMP can also be used to relay query messages. It is assigned protocol number 1. ICMP differs from transport protocols such as TCP and UDP in that it is not typically used to exchange data between systems, nor is it regularly employed by end-user network applications (with the exception of some diagnostic tools like ping and traceroute).
@@ -717,9 +731,12 @@ public class AddClient
   	\section{Characteristics}
   	
   	\begin{itemize}
-  		\item Needs to cope with a variety of external events (where software is becoming frequently large and complex)		\item Reliable and safe: able to detect and recover from failures		\item Need to interact with external hardware
+  		\item Needs to cope with a variety of external events (where software is becoming frequently large and complex)
+		\item Reliable and safe: able to detect and recover from failures
+		\item Need to interact with external hardware
   		\item Need to be able to specify timing requirements (when to perform actions, when to complete actions by, what to do when deadlines are missed, importance of granularity (e.g. IBM PC clock granularity is 55ms, which can mean 100yds at 600mph)
-  		\item Event-driven rather than process-driven (external events must be dealt with as they occur; event ordering is not generally predictable)		\item Generally uses concurrent processes (each event source can be handled by a separate process)  
+  		\item Event-driven rather than process-driven (external events must be dealt with as they occur; event ordering is not generally predictable)
+		\item Generally uses concurrent processes (each event source can be handled by a separate process)  
   		\item Must have predictable response times (factors to consider: caching/pipelining affect program speed, worst case is an order of magnitude slower than the average, fast programs \& external time)
   		\item Code must be safe (i.e. nothing `bad' will happen) and live (i.e. something `good' will eventually happen). `Eventually' must be able to be upper-bounded, as livelock can particularly be an issue in real-time systems.
   	\end{itemize}
@@ -743,13 +760,75 @@ public class AddClient
     	\subsection{Steganography}
     	\subsection{SSL}
   	\section{Types of attack}
-    	\subsection{Trojan}
-    	\subsection{Virus}
-    	\subsection{Worm}
-    	\subsection{Denial of service}
-    	\subsection{Mail bombing}
-    	\subsection{Phishing}
-    	\subsection{Keylogging}
-  	\section{Protection}
+	    	\subsection{Trojan}
+ 		 A useful program which performs some extra unwanted activity e.g. copying your password file to a third party Many Trojans used for password cracking e.g. a Trojan might mimic a login dialog and send the password entered to a third party it might replace the system login program with a ‘doctored’ copy. Windows uses Ctrl-Alt-Del to prevent this.
+
+    		\subsection{Virus}
+Viruses embed themselves in other programs they might attach themselves to the end of an executable file and modify the program start address to run the virus code first. When they run, they copy themselves to other programs Only executable programs can be infected but: e.g. Word documents can contain executable macros.
+
+	    	\subsection{Worm}
+			Worms copy themselves from one machine to another usually exploiting loopholes in network code 
+			\subsubsection{The Internet worm} released by Robert Morris Jr. of Cornell University brought the whole Internet to a halt for three days in 1998. The worm transferred a small ‘grappling hook’ program to neighboring machines.
+The grappling hook then downloaded the rest of the worm which included a password cracker this then used Cracked passwords to connect to other machines, repeating the process. 
+
+
+	    	\subsection{Denial of service}
+			A website is flooded with requests which prevent legitimate request from being serviced
+
+			can be a distributed denial of service, where machines around the work are hijacked by a Trojan to mount a coordinated attack. Due to the natured of this attack it is very hard to assess which requests are coming from a valid source as some botnets can have millions of emails. This type of attack is very commonly used by hacktavist groups such as anonymous and lulsec.
+
+	    	\subsection{Mail bombing}
+
+			Mail bombing is similar to a Denial of service attack however in this instance a users email address is rendered unaccessible.
+
+Mail bombing can be performed in a variety of ways one such is \textbf{Mass Mailing} this entails sending a vast amount of emails to a users account causing an overflow in the users inbox or exceeding the maximum amount of storage on the server which would stop legitimate emails from reaching there intended location.
+
+\textbf{List Linking} is the process of signing a user up to several email lists which the victim will then have to unsubscribe from, this type of mail bombing can be circumnavigated by making the user confirm their subscription to the mailing list, however if the attacker uses a forwarding email account this method is ineffective. 
+
+\textbf{Zip bombing} is performed by sending a zip archive that may only consist of one letter repeated an extremely large amount of times, such a file will be extremely small when archived however the anti virus on the server will attempt to open the archive will result in a massive amount of processing time being required by the server resulting in a denial of service attack. 
+
+
+	    	\subsection{Phishing}
+		Spam directing users to fake websites (usually copied from real ones) e.g. bank sites: used to collect account details form submission transfers you to the real site (after your account details have been recorded by the bad guys).
+
+
+	    	\subsection{Keylogging}
+  		 A Trojans records your keystrokes (password etc.) and transmits them to a remote site.
+
+		\subsection{DNS poisoning and pharming}
+		DNS entries are changed so a legitimate domain name gets redirected to a fake site.
+
+		\subsection{Man in the middle attacks}
+Man in the middle attack is a form of active eavesdropping in which the attacker makes independent connections with the victims and relays messages between them, making them believe that they are talking directly to each other over a private connection, when in fact the entire conversation is controlled by the attacker. The attacker must be able to intercept all messages going between the two victims and inject new ones, which is straightforward in many circumstances (for example, an attacker within reception range of an unencrypted Wi-Fi wireless access point, can insert himself as a man-in-the-middle
+
+A man-in-the-middle attack can succeed only when the attacker can impersonate each endpoint to the satisfaction of the other—it is an attack on (or lack of) mutual authentication. Most cryptographic protocols include some form of endpoint authentication specifically to prevent MITM attacks. For example, SSL can authenticate one or both parties using a mutually trusted certification authority.
+
+		\subsection{General intrusions}
+		Using a compromised server to store illicit material (e.g. porn or pirated movies)
+
+
+	  	\section{Protection}
+		
+		\subsection{Java Security}
+		Java applets are loaded into a JVM using a security manager which: statically scans bytecodes looking for unsafe code, e.g. jumps to addresses in a different method, dynamically checks resource requests, and grants or denies them.
+
+		``Trusted" code can be digitally signed, signatures are verified by the security manager.
+
+		Stack inspection used to propagate permissions callers must be trusted and must have the required permission.
+
+
+ 		\subsection{Sandboxes}
+		 e.g. an emulator, or a virtual machine like the JVM any damage affects only the sandbox, not the host machine.
+		The sandbox typically provides a tightly-controlled set of resources for guest programs to run in, such as scratch space on disk and memory. Network access, the ability to inspect the host system or read from input devices are usually disallowed or heavily restricted. In this sense, sandboxes are a specific example of virtualization.
+
+		\subsection{Firewalls}
+		Prevent network attacks by using a firewall to filter network traffic, e.g. by restricting access to certain ports only machines inside the firewall can still communicate freely.
+		Firewalls can also do packet filtering e.g. inspect packet contents for virus checking or spam blocking purposes
+
+		\subsection{Proxies}
+		Send all outbound traffic via a proxy. The proxy passes on requests to the outside world and routes replies back to the originator.
+		Only the proxy is visible to the outside world.
+		Other machines are prevented by a firewall from contacting the outside world directly.
+
 
 \end{document}
