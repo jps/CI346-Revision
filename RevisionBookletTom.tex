@@ -667,11 +667,10 @@ public class AddClient
 	
 	 The most well-known transport protocol is the Transmission Control Protocol (TCP). It lent its name to the title of the entire Internet Protocol Suite, TCP/IP. It is used for connection-oriented transmissions, whereas the connectionless User Datagram Protocol (UDP) is used for simpler messaging transmissions. TCP is the more complex protocol, due to its stateful design incorporating reliable transmission and data stream services. Other prominent protocols in this group are the Datagram Congestion Control Protocol (DCCP) and the Stream Control Transmission Protocol (SCTP).
 
-
     	\subsection{Name resolution/DNS}
 	Domain Name System  is a hierarchical distributed naming system for computers, services, or any resource connected to the Internet or a private network. It associates various information with domain names assigned to each of the participating entities.
 
-	  A Domain Name Service resolves queries for domain names (which are easier to understand and utilize when accessing the internet) into IP addresses for the purpose of locating computer services and devices worldwide.
+	  A Domain Name Service resolves queries for domain names (which are easier to understand and utilise when accessing the internet) into IP addresses for the purpose of locating computer services and devices worldwide.
 
 	 An often-used analogy to explain the Domain Name System is that it serves as the phone book for the Internet by translating human-friendly computer hostnames into IP addresses. For example, the domain name www.example.com translates to the addresses 192.0.43.10 (IPv4) and 2620:0:2d0:200::10 (IPv6).
 	
@@ -736,12 +735,43 @@ public class AddClient
 	
 	For security reasons, a system should not show a password when typed in by the user (even displaying passwords as a series of asterisks reveals their length). Additionally, passwords should be encrypted by the system. A one-way encryption method could be used, as the entered password would only need to be compared to a stored copy of the encrypted password. An example of a one-way encryption algorithm is the \emph{Message Digest Version 5} (MD5). With MD5, the text is converted into a 16 byte value (a hash which is unique representation of the password in the majority of cases - the SHA256 checksum provides even greater reliability).
 	
-	\emph{Other forms of authentication include physical authentication (swipe cards, keys etc.), biometric data (fingerprints, iris patterns, face recognition etc.), and individual biometric actions (such as the timing of keystrokes when typing a password to recognise a user's behaviour)}
+	\subsection{Ensuring Password Integrity}
+	
+	\begin{itemize}
+		\item Don't allow passwords which are too short, or in a dictionary (easy to enumerate all possibilities)
+		\item Use a delay to prevent rapid attempts by another computer
+		\item Keep encrypted passwords hidden to prevent offline attacks with no delays
+		\item Force users to change passwords at regular intervals (although this can cause users to choose repetitive patterns to make passwords memorable)		\item Generate passwords automatically (although this can lead users to write down unmemorable passwords)
+	\end{itemize}
+
+	\noindent\emph{Other forms of authentication include physical authentication (swipe cards, keys etc.), biometric data (fingerprints, iris patterns, face recognition etc.), and individual biometric actions (such as the timing of keystrokes when typing a password to recognise a user's behaviour)}
 
 	\section{Encryption}
+	
+	Protect information by encrypting it. Decrypting requires knowledge of the encryption key. There are two main approaches: symmetric (private key) cryptosystems, where the same key is used to encrypt and decrypt, and asymmetric (public key) cryptosystems, where different keys are used to encrypt and decrypt.
+	
+		\subsection{Private-key}
+	
+		Where the same key is used to encrypt and decrypt. A simple example being ROT-n substitution ciphers, where each letter is replaced by the letter \emph{n} places further on in the alphabet (decryption is the reverse process, the key is the value of \emph{n}). ROT-13 sometimes used on Usenet newsgroups to prevent ‘spoilers’ (e.g. revealing the ending of a movie or the final score in a football match) which people might prefer not to see. It's easy to decrypt if you want to see the information.
+		
+		Another example being US Data Encryption Standard (DES), which usually uses a 56-bit key (longer keys can be used to make it harder to crack). The key is used to generate a set of sixteen 48- bit keys which are used to permute each 64-bit block in 16 successive ‘rounds’ (this is computationally efficient but hard to crack).
+		
+		Key distribution is a big problem with private methods, as it requires a private message, and a physical courier, or encryption using an already-known key
+	
     	\subsection{Public-key}
+    	
+    	The public-key method (originally described by Diffie and Hellman, first implemented by Rivest, Shamir and Adleman - RSA). Two keys are used: the recipient's public key used by the sender to encrypt the message, and the recipient's private key used by the recipient to decrypt the message. The two keys are mathematically linked, so the recipient is able to use his private key (which only he knows) to decrypt the message. RSA relies on the computation complexity of factoring large prime numbers to provide it's security. Peter Shor devised a quantum algorithm capable of factoring primes in polynomial time (classical algorithms are capable of sub-exponential at best). Pretty Good Privacy (PGP) is a popular RSA implementation. Public-key methods are less efficient than private-key systems (due to the more complex algorithm).
+    	    	
+    	\subsubsection{Process:} Take two large primes ($P$ and $Q$), and compute $N = (P – 1) * (Q – 1)$. Then find a smaller value E which does not divide exactly into $N$, and find another value $D$ where $D * E = 1 mod N$. The public key is the pair ($E,N$), and the private key is the pair ($D,N$).
+    	
     	\subsection{Steganography}
+    	
+    	Steganography (or `covered writing') is the idea of writing hidden messages in such a way that no one, apart from the sender and intended recipient, suspects the existence of the message, and is a form of security through obscurity. Decryption only possible if you know what is and isn’t a message. An example of steganography is to use images to conceal messages: the last bit of selected pixels is modified (which makes no visible difference to the picture), and can be used to embed `watermarks' in pictures to identify their owners.
+    	
     	\subsection{SSL}
+    	
+    	Secure Sockets Layer (SSL) is layered on top of TCP, and used to establish secure links (e.g. for  online shopping). A server provides a certificate which is digitally signed by a certification authority (certification authorities have well-known public keys) which certifies that the server really is who it claims to be. The client and server exchange 224-bit random numbers, and agree on the algorithms to use (e.g. RSA, DES and MD5). The client then sends a random 48-byte premaster secret, encrypted using server’s public key. Client and server both use the premaster secret and the 224-bit random numbers to generate keys known by both parties to be used for DES encryption.
+    	
   	\section{Types of attack}
     	\subsection{Trojan}
     	\subsection{Virus}
@@ -751,5 +781,24 @@ public class AddClient
     	\subsection{Phishing}
     	\subsection{Keylogging}
   	\section{Protection}
+  	
+  	\chapter{Transactional Memory}
+  	
+  	Transactional memory attempts to simplify parallel programming by allowing a group of load and store instructions to execute in an atomic way. It is a concurrency control mechanism analogous to database transactions for controlling access to shared memory in concurrent computing.
+  	
+  	\subsection{Hardware Transactional Memory}
+  	Hardware Transactional Memory (HTM) systems may comprise modifications in processors, cache and bus protocol to support transactions. Current HTM implementations make use of processor caches and speculative execution to ensure that a designated group of statements (called a “transaction”) executes atomically from the viewpoint of any other transaction. 
+
+However, HTM is unable to handle non-idempotent operations, such as unbuffered I/O (especially things like remote procedure calls) and system calls including memory mapping and exec(). This limitation appears to be inherent to HTM.HTM also limits maximum transaction size. HTM is also subject to thorny validation issues, including the inability to usefully set breakpoints in or single-step through transaction. 
+
+HTM is likely to be at its best for large in-memory data structures that are difficult to statically partition but that are dynamically partitionable, in other words, the conflict probability is reasonably low. 
+  	
+  	\subsection{Software Transactional Memory}
+  	
+  	Software Transactional Memory (STM) provides transactional memory semantics in a software runtime library or the programming language, and requires minimal hardware support. STM is a concurrency control mechanism analogous to database transactions for controlling access to shared memory in concurrent computing, and is an alternative to lock-based synchronisation. A transaction in this context is a piece of code that executes a series of reads and writes to shared memory. These reads and writes logically occur at a single instant in time; intermediate states are not visible to other (successful) transactions. The idea of providing hardware support for transactions originated in a 1986 paper by Tom Knight. The idea was popularised by Maurice Herlihy and J. Eliot B. Moss. In 1995 Nir Shavit and Dan Touitou extended this idea to software-only transactional memory (STM). STM has recently been the focus of \textbf{\emph{INTENSE}} research and support for practical implementations is growing.
+  	
+  	\subsubsection{Language Support}
+  	Some languages which currently support STM: 
+  	C/C++, C#, Clojure, Common Lisp, Haskell, Java, OCaml, Perl, Python, Scala.
 
 \end{document}
