@@ -741,7 +741,8 @@ public class AddClient
 		\item Don't allow passwords which are too short, or in a dictionary (easy to enumerate all possibilities)
 		\item Use a delay to prevent rapid attempts by another computer
 		\item Keep encrypted passwords hidden to prevent offline attacks with no delays
-		\item Force users to change passwords at regular intervals (although this can cause users to choose repetitive patterns to make passwords memorable)		\item Generate passwords automatically (although this can lead users to write down unmemorable passwords)
+		\item Force users to change passwords at regular intervals (although this can cause users to choose repetitive patterns to make passwords memorable)
+		\item Generate passwords automatically (although this can lead users to write down unmemorable passwords)
 	\end{itemize}
 
 	\noindent\emph{Other forms of authentication include physical authentication (swipe cards, keys etc.), biometric data (fingerprints, iris patterns, face recognition etc.), and individual biometric actions (such as the timing of keystrokes when typing a password to recognise a user's behaviour)}
@@ -772,17 +773,78 @@ public class AddClient
     	
     	Secure Sockets Layer (SSL) is layered on top of TCP, and used to establish secure links (e.g. for  online shopping). A server provides a certificate which is digitally signed by a certification authority (certification authorities have well-known public keys) which certifies that the server really is who it claims to be. The client and server exchange 224-bit random numbers, and agree on the algorithms to use (e.g. RSA, DES and MD5). The client then sends a random 48-byte premaster secret, encrypted using server’s public key. Client and server both use the premaster secret and the 224-bit random numbers to generate keys known by both parties to be used for DES encryption.
     	
-  	\section{Types of attack}
-    	\subsection{Trojan}
-    	\subsection{Virus}
-    	\subsection{Worm}
-    	\subsection{Denial of service}
-    	\subsection{Mail bombing}
-    	\subsection{Phishing}
-    	\subsection{Keylogging}
-  	\section{Protection}
-  	
-  	\chapter{Transactional Memory}
+\section{Types of attack}
+	    	\subsection{Trojan}
+ 		 A useful program which performs some extra unwanted activity e.g. copying your password file to a third party Many Trojans used for password cracking e.g. a Trojan might mimic a login dialog and send the password entered to a third party it might replace the system login program with a ‘doctored’ copy. Windows uses Ctrl-Alt-Del to prevent this.
+
+    		\subsection{Virus}
+Viruses embed themselves in other programs they might attach themselves to the end of an executable file and modify the program start address to run the virus code first. When they run, they copy themselves to other programs Only executable programs can be infected but: e.g. Word documents can contain executable macros.
+
+	    	\subsection{Worm}
+			Worms copy themselves from one machine to another usually exploiting loopholes in network code 
+			\subsubsection{The Internet worm} released by Robert Morris Jr. of Cornell University brought the whole Internet to a halt for three days in 1998. The worm transferred a small ‘grappling hook’ program to neighboring machines.
+The grappling hook then downloaded the rest of the worm which included a password cracker this then used Cracked passwords to connect to other machines, repeating the process. 
+
+
+	    	\subsection{Denial of service}
+			A website is flooded with requests which prevent legitimate request from being serviced
+
+			can be a distributed denial of service, where machines around the work are hijacked by a Trojan to mount a coordinated attack. Due to the natured of this attack it is very hard to assess which requests are coming from a valid source as some botnets can have millions of emails. This type of attack is very commonly used by hacktavist groups such as anonymous and lulsec.
+
+	    	\subsection{Mail bombing}
+
+			Mail bombing is similar to a Denial of service attack however in this instance a users email address is rendered unaccessible.
+
+Mail bombing can be performed in a variety of ways one such is \textbf{Mass Mailing} this entails sending a vast amount of emails to a users account causing an overflow in the users inbox or exceeding the maximum amount of storage on the server which would stop legitimate emails from reaching there intended location.
+
+\textbf{List Linking} is the process of signing a user up to several email lists which the victim will then have to unsubscribe from, this type of mail bombing can be circumnavigated by making the user confirm their subscription to the mailing list, however if the attacker uses a forwarding email account this method is ineffective. 
+
+\textbf{Zip bombing} is performed by sending a zip archive that may only consist of one letter repeated an extremely large amount of times, such a file will be extremely small when archived however the anti virus on the server will attempt to open the archive will result in a massive amount of processing time being required by the server resulting in a denial of service attack. 
+
+
+	    	\subsection{Phishing}
+		Spam directing users to fake websites (usually copied from real ones) e.g. bank sites: used to collect account details form submission transfers you to the real site (after your account details have been recorded by the bad guys).
+
+
+	    	\subsection{Keylogging}
+  		 A Trojans records your keystrokes (password etc.) and transmits them to a remote site.
+
+		\subsection{DNS poisoning and pharming}
+		DNS entries are changed so a legitimate domain name gets redirected to a fake site.
+
+		\subsection{Man in the middle attacks}
+Man in the middle attack is a form of active eavesdropping in which the attacker makes independent connections with the victims and relays messages between them, making them believe that they are talking directly to each other over a private connection, when in fact the entire conversation is controlled by the attacker. The attacker must be able to intercept all messages going between the two victims and inject new ones, which is straightforward in many circumstances (for example, an attacker within reception range of an unencrypted Wi-Fi wireless access point, can insert himself as a man-in-the-middle
+
+A man-in-the-middle attack can succeed only when the attacker can impersonate each endpoint to the satisfaction of the other—it is an attack on (or lack of) mutual authentication. Most cryptographic protocols include some form of endpoint authentication specifically to prevent MITM attacks. For example, SSL can authenticate one or both parties using a mutually trusted certification authority.
+
+		\subsection{General intrusions}
+		Using a compromised server to store illicit material (e.g. porn or pirated movies)
+
+
+	  	\section{Protection}
+		
+		\subsection{Java Security}
+		Java applets are loaded into a JVM using a security manager which: statically scans bytecodes looking for unsafe code, e.g. jumps to addresses in a different method, dynamically checks resource requests, and grants or denies them.
+
+		``Trusted" code can be digitally signed, signatures are verified by the security manager.
+
+		Stack inspection used to propagate permissions callers must be trusted and must have the required permission.
+
+
+ 		\subsection{Sandboxes}
+		 e.g. an emulator, or a virtual machine like the JVM any damage affects only the sandbox, not the host machine.
+		The sandbox typically provides a tightly-controlled set of resources for guest programs to run in, such as scratch space on disk and memory. Network access, the ability to inspect the host system or read from input devices are usually disallowed or heavily restricted. In this sense, sandboxes are a specific example of virtualization.
+
+		\subsection{Firewalls}
+		Prevent network attacks by using a firewall to filter network traffic, e.g. by restricting access to certain ports only machines inside the firewall can still communicate freely.
+		Firewalls can also do packet filtering e.g. inspect packet contents for virus checking or spam blocking purposes
+
+		\subsection{Proxies}
+		Send all outbound traffic via a proxy. The proxy passes on requests to the outside world and routes replies back to the originator.
+		Only the proxy is visible to the outside world.
+		Other machines are prevented by a firewall from contacting the outside world directly.
+
+  		\chapter{Transactional Memory}
   	
   	Transactional memory attempts to simplify parallel programming by allowing a group of load and store instructions to execute in an atomic way. It is a concurrency control mechanism analogous to database transactions for controlling access to shared memory in concurrent computing.
   	
@@ -800,5 +862,6 @@ HTM is likely to be at its best for large in-memory data structures that are dif
   	\subsubsection{Language Support}
   	Some languages which currently support STM: 
   	C/C++, C#, Clojure, Common Lisp, Haskell, Java, OCaml, Perl, Python, Scala.
+
 
 \end{document}
