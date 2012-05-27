@@ -131,10 +131,7 @@ There are many different paradigms in computer programming here are some example
 \end{description}
 
 
-\section{A comparison between Java, Ada, Haskell and Prolog}
-
-
-	\subsection{Typing Systems}
+	\section{Typing Systems}
 
 		\subsubsection{Static}
 
@@ -180,6 +177,10 @@ concatenate(str(a), b) # Returns "22"
 add(a, int(b))         # Returns 4
 \end{lstlisting}
 
+
+\section{A comparison between Java, Ada, Haskell and Prolog}
+
+
 	\subsection{Java}
 	
 	Java is a static, Object Orientated , structured, imperative, generic, reflective generic reflective language. 
@@ -190,14 +191,97 @@ add(a, int(b))         # Returns 4
 	\begin{itemize}
 	\item Multi threading
 	\item Networking Libraries
-	\
+	\item Platform Independent GUI (SWING)
+	\item Large standardized class library
 	\end{itemize}
 	
 
 	\subsection{Ada}
 
+	Ada is a Multi-paradigm structured, statically typed, imperative, wide-spectrum, and object-oriented high-level computer programming language, extended from Pascal and other languages. It has strong built-in language support for explicit concurrency, offering tasks, synchronous message passing (via guarded task entries), protected objects (a monitor-like construct with additional guards as in conditional critical regions), and nondeterminism (via select statements).
+
+	Ada was originally designed by a team led by Jean Ichbiah of CII Honeywell Bull under contract to the United States Department of Defense (DoD) from 1977 to 1983 to supersede the hundreds of programming languages then used by the DoD. Ada is strongly typed and compilers are validated for reliability in mission-critical applications, such as avionics software.
+
+
+Ada's type system is not based on a set of predefined primitive types but allows users to declare their own types. This declaration in turn is not based on the internal representation of the type but on describing the goal which should be achieved. This allows the compiler to determine a suitable memory size for the type, and to check for violations of the type definition at compile time and run time (i.e. range violations, buffer overruns, type consistency, etc.). Ada supports numerical types defined by a range, modulo types, aggregate types (records and arrays), and enumeration types. Access types define a reference to an instance of a specified type; untyped pointers are not permitted. Special types provided by the language are task types and protected types.
+
+
+	\begin{lstlisting}[label=Date Type,caption=Ada Date Type] 
+
+type Day_type   is range    1 ..   31;
+type Month_type is range    1 ..   12;
+type Year_type  is range 1800 .. 2100;
+type Hours is mod 24;
+type Weekday is (Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday); 
+ 
+type Date is
+   record
+     Day   : Day_type;
+     Month : Month_type;
+     Year  : Year_type;
+   end record;
+
+
+	\end{lstlisting}
+
+
+
+	Ada programs consist of packages, procedures and functions.
+
+	Packages, procedures and functions can nest to any depth and each can also be the logical outermost block.
+
+	Each package, procedure or function can have its own declarations of constants, types, variables, and other procedures, functions and packages, which can be declared in any order.
+
+	\begin{lstlisting}[label=Ada Package Specification,caption=Ada Package Specification] 
+package Example is
+     type Number is range 1 .. 11;
+     procedure Print_and_Increment (j: in out Number);
+end Example;
+	\end{lstlisting}
+
+
+\begin{lstlisting}[label=Ada Package Implementation,caption=Ada Package Implementation] 
+with Ada.Text_IO; 
+package body Example is
+
+i : Number := Number'First;
+
+procedure Print_and_Increment (j: in out Number) is
+
+function Next (k: in Number) return Number is
+begin
+return k + 1;
+end Next;
+
+begin
+Ada.Text_IO.Put_Line ('The total is: ' & Number'Image(j));
+j := Next (j);
+end Print_and_Increment;
+
+begin
+while i < Number'Last loop
+Print_and_Increment (i);
+end loop;
+end Example;
+\end{lstlisting}
 
 	\subsection{C++}
+
+	C++ is a statically typed, free-form, multi-paradigm, compiled, general-purpose, powerful programming language. It is regarded as an intermediate-level language, as it comprises a combination of both high-level and low-level language features. It was developed by Bjarne Stroustrup starting in 1979 at Bell Labs object oriented features such as classes to the C programming language. Originally named C with Classes, the language was renamed C++ in 1983, as a pun involving the increment operator.
+
+ 	C++ is one of the most popular programming languages implemented on a wide variety of hardware and operating system platforms. As an efficient compiler to native code, its application domains including systems software, application software, device drivers, embedded software, high-performance server and client applications, and entertainment software such as video games. Several groups provide both free and proprietary C++ compiler software, including the GNU Project, Microsoft, Intel and Embarcadero Technologies. Java and C\# which have become popular alternatives evolved from C++, but make extensive use of automatic garbage collection and compiling to an intermediate machine-independent intermediate code.
+	
+
+	\begin{itemize}
+	\item Operator Overloading
+	\item Templates/ Generic programming
+	\item Encapsulation (Hiding information dependent on scope, private, public etc.)
+	\item Inheritance
+	\item Standardized class libraries (Stabdard Template Libary (STL), Core Library)
+	\item Pointer arithmetic and manipulation 
+	\item Multithreading possible however this often requires an external library such as OpenMP or Boost C++
+	\end{itemize}
+
 
 
 	\subsection{Haskell}
